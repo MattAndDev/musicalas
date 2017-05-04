@@ -1,0 +1,16 @@
+//============================================
+// Clearfix
+//============================================
+
+=clearfix
+  &:after,
+  &:before
+    display: table
+    content: ""
+
+  &:after
+    clear: both
+
+// Alias
+=cf
+  +clearfix

@@ -1,0 +1,23 @@
+//============================================
+// Content wrapper
+//============================================
+
+.u-cw
+  max-width: $layout-width-xs
+  margin: 0 auto
+  padding: 0 $layout-gutter-xs
+
++mq($bp-sm)
+  .u-cw
+    max-width: $layout-width-sm
+    padding: 0 $layout-gutter-sm
+
++mq($bp-md)
+  .u-cw
+    max-width: $layout-width-md
+    padding: 0 $layout-gutter-md
+
++mq($bp-lg)
+  .u-cw
+    max-width: $layout-width-lg
+    padding: 0 $layout-gutter-lg
