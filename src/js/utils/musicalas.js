@@ -1,17 +1,21 @@
 // =======================================================================
 // Paper.js
 // =======================================================================
-
+// libs
 import _ from 'lodash'
 import paper from 'paper'
+// utils
 import settings from 'settings'
+import AudioParser from 'utils/audio-parser'
+
 class Musicalas {
 
   constructor ($el) {
 
+    this.audioParser = new AudioParser()
     // configuration object for path
     this.pathConfig = {
-      width: Math.round(settings.window.x / 4),
+      width: Math.round(settings.window.y / 4),
       points: 40
     }
 
