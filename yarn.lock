@@ -5083,6 +5083,10 @@ paper:
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/paper/-/paper-0.11.3.tgz#f9206ccbe1026d2de50bcc63e06e59af98808ebf"
 
+paper-loader:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/paper-loader/-/paper-loader-0.1.2.tgz#4c5f8b816161d72c62f31a849b3315f7030b3ad4"
+
 parse-asn1@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/parse-asn1/-/parse-asn1-5.0.0.tgz#35060f6d5015d37628c770f4e091a0b5a278bc23"

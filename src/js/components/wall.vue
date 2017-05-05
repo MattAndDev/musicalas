@@ -7,8 +7,7 @@
 
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
-  <div ref="wall" class="wall">
-  </div>
+  <canvas ref="wall" class="wall" resize></canvas >
 </template>
 
 <script>
@@ -17,12 +16,12 @@ import Vue from 'Vue'
 // store
 import store from 'store'
 // utils
-import Paper from 'utils/paper'
+import Musicalas from 'utils/musicalas'
 
 export default {
   name: 'wall',
   mounted () {
-    let paper = new Paper(this.$refs.wall)
+    let paper = new Musicalas(this.$refs.wall)
   }
 }
 </script>
