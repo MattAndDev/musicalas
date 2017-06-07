@@ -15,15 +15,22 @@ class AudioParser {
     // Vue.http.options.xhr = {withCredentials: true}
     this._testAudioContext((err) => {
       if (!err) {
-        this._getStream(streamUrl).then((stream) => {
-          this._buildBuffer(stream)
+        this._getStream(streamUrl).then((arrayBuffer) => {
+          this._buildSource(arrayBuffer)
         })
       }
     })
   }
 
-  _buildBuffer (stream) {
-    this.context.decodeAudioData(stream.body, (buffer) => {
+
+  // _buildSource
+  // ============================================
+  // builds the source of the adio node
+  // @params
+  // arrayBuffer -> valid arrayBuffer
+
+  _buildSource (arrayBuffer) {
+    this.context.decodeAudioData(arrayBuffer, (buffer) => {
       this.source = this.context.createBufferSource()
       this.source.buffer = buffer
       this.source.start(0)
@@ -32,6 +39,9 @@ class AudioParser {
   }
 
 
+  // play()
+  // ============================================
+  // just connecting source to destination
   play () {
     this.source.connect(this.context.destination)
   }
@@ -48,10 +58,17 @@ class AudioParser {
   _getStream (streamUrl) {
     return new Promise((resolve, reject) => {
       Vue.http.get(streamUrl + `?client_id=${env.scClientId}`, {responseType: 'arraybuffer'}).then(response => {
-        response.status === 200 ? resolve(response) : reject(response)
+        response.status === 200 ? resolve(response.body /* <- arraybuffer */) : reject(response)
       })
     })
   }
+
+
+  // _testAudioContext()
+  // ============================================
+  // check for really old browsrs
+  // @params:
+  // cb -> function which first parameter represents the presence of audio pai
 
   _testAudioContext (cb) {
     try {
