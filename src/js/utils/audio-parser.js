@@ -12,12 +12,12 @@ class AudioParser {
 
   constructor (streamUrl) {
     Vue.use(VueResource)
-    // Vue.http.options.xhr = {withCredentials: true}
     this._testAudioContext((err) => {
       if (!err) {
-        this._getStream(streamUrl).then((arrayBuffer) => {
-          this._buildSource(arrayBuffer)
-        })
+        this._getStream(streamUrl)
+        .then(this._buildSource.bind(this))
+        .then(this._createAalyser.bind(this))
+        .then(() => {})
       }
     })
   }
@@ -29,12 +29,15 @@ class AudioParser {
   // @params
   // arrayBuffer -> valid arrayBuffer
 
-  _buildSource (arrayBuffer) {
-    this.context.decodeAudioData(arrayBuffer, (buffer) => {
-      this.source = this.context.createBufferSource()
-      this.source.buffer = buffer
-      this.source.start(0)
-      this.play()
+  _buildSource () {
+    return new Promise((resolve, reject) => {
+      return this.context.decodeAudioData(this.arrayBuffer, (buffer) => {
+        this.source = this.context.createBufferSource()
+        this.source.buffer = buffer
+        this.source.start(0)
+        console.log('eueue');
+        resolve()
+      })
     })
   }
 
@@ -58,9 +61,41 @@ class AudioParser {
   _getStream (streamUrl) {
     return new Promise((resolve, reject) => {
       Vue.http.get(streamUrl + `?client_id=${env.scClientId}`, {responseType: 'arraybuffer'}).then(response => {
+        this.arrayBuffer = response.body
         response.status === 200 ? resolve(response.body /* <- arraybuffer */) : reject(response)
       })
     })
+  }
+
+
+  // Set up the Analiser node
+  _createAalyser () {
+    // Create the analyser
+    this.analyser = this.context.createAnalyser()
+    this.analyser.smoothingTimeConstant = 0.7
+
+    // Connect it to the source
+    this.source.connect(this.analyser)
+
+    // Parse the data
+    this.context.frequencyData = new Uint8Array(this.analyser.fftSize)
+
+    // recalculate the data every 20 ms
+    setTimeout(() => {
+      this.analyser.getByteFrequencyData(this.context.frequencyData)
+      this.getAverageFrequency(100, 120)
+    }, 20)
+  }
+
+
+  getAverageFrequency (start, end) {
+    if (isNaN(start) || isNaN(end)) return false
+    let total = 0
+    let length = Math.abs(start, end)
+    for (var i = start; i < end; i++) {
+      total = total + this.context.frequencyData[i]
+    }
+    return total / length
   }
 
 
