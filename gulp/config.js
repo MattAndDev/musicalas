@@ -189,6 +189,7 @@ export default {
         components: `${src}/js/components`,
         views: `${src}/js/views`,
         settings: `${src}/js/utils/settings`,
+        env: `${src}/js/env`,
         store: `${src}/js/store`
       }
     }
