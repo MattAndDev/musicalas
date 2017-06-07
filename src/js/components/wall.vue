@@ -21,7 +21,7 @@ import Musicalas from 'utils/musicalas'
 export default {
   name: 'wall',
   mounted () {
-    let paper = new Musicalas(this.$refs.wall)
+    let magic = new Musicalas(this.$refs.wall)
   }
 }
 </script>
