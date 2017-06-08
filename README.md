@@ -2,4 +2,4 @@
 
 vectors/mandalas/mucke
 
-Random deployed wip version -> [musicalas.mattinthe.net](musicalas.mattinthe.net)
+Random deployed wip version -> [musicalas.mattinthe.net](http://musicalas.mattinthe.net)
