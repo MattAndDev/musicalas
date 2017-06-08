@@ -55,7 +55,7 @@ class Painter {
   // _drawCircle
   // ============================================
   // creates a ricle with the radius of this.circleConfig.radius
-  // adds n points (this.circleConfig.radius) on the utline of the circle
+  // adds n points (this.circleConfig.points) on the outline of the circle
 
   _drawCircle () {
     let segments = []
