@@ -14,165 +14,71 @@ class Painter {
   constructor ($el) {
     // configuration object for path
     this.pathConfig = {
-      width: Math.round(settings.window.y / 4),
+      width: 5,
       points: 40
     }
     // hook paper to provided el
     paper.setup($el)
 
     // pass on event handlers
-    paper.view.onResize = this.onResize
-    paper.view.onMouseMove = this.onMouseMove
+    paper.view.onResize = this.onResize.bind(this)
+    paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
 
     AudioParser.on('ready', () => {
-      this._addPath()
+      this._drawCircle()
+    //   this._addPath()
     })
 
 
   }
 
   render () {
-    if (this.cluster) {
-      _.each(this.cluster, (path, pathIndex) => {
-        if (pathIndex === 0) {
-          _.each(path.segments, (segment, segmentIndex) => {
-            if (segmentIndex >= 1 && segmentIndex <= this.pathConfig.points - 2)  {
-              segment.point.x = path.reference[segmentIndex].point.x - AudioParser.getAverageFrequency(100, 130)
-              segment.point.y = path.reference[segmentIndex].point.y - AudioParser.getAverageFrequency(100, 130)
-            }
-          })
-        }
-      })
+    if (this.circle) {
+      // let r = this.pathConfig.width
+      // for (let i = 0; i < this.circle.segments.length; i++) {
+      //   let t = 2 * Math.PI * i / this.circle.segments.length
+      //   let x = Math.round(this.pathConfig.width + r * Math.cos(t) + AudioParser.getAverageFrequency(100, 130))
+      //   let y = Math.round(this.pathConfig.width + r * Math.sin(t) + AudioParser.getAverageFrequency(100, 130))
+      //   this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
+      //   this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
+      // }
     }
   }
   // _addPath
   // ============================================
   // takes care of drawing a path along a quarter of circle line
 
-  _addPath () {
 
-    // set fir/last point for stencilPath
-    let firstPoint = new paper.Segment(paper.view.center.subtract([0, this.pathConfig.width]), null, null)
-    let lastPoint = new paper.Segment(paper.view.center.subtract([this.pathConfig.width, 0], null, null))
-
-
-    let testSomeMath = Math.sqrt(Math.pow(this.pathConfig.width, 2) - Math.pow(this.pathConfig.width / 2, 2))
-    // draw an arc (stencilPath)
-    // this is used to get all necessary point along the arc line with getPointAt
-    this.stencilPath = new paper.Path.Arc({
-      from: new paper.Point(paper.view.center.subtract([0, this.pathConfig.width])),
-      through: new paper.Point(paper.view.center.subtract([this.pathConfig.width / 2, testSomeMath])),
-      to: new paper.Point(paper.view.center.subtract([this.pathConfig.width, 0]))
-    })
-
-    // init the poitns toconstruct the real path
-    let points = []
-    // push the firstpoint
-    points.push(firstPoint)
-
-    // for items in path config, add points on path at regular distance
-    // distance calculated based on stencilPath lenght and points in pathConfig
-    for (var i = 0; i < this.pathConfig.points; i++) {
-      // calculate
-      let point = new paper.Segment(new paper.Point(this.stencilPath.getPointAt((this.stencilPath.length / this.pathConfig.points) * i)), null, null)
-      // push it
-      points.push(point)
+  _drawCircle () {
+    let segments = []
+    let r = this.pathConfig.width
+    for (let i = 0; i < this.pathConfig.points; i++) {
+      let t = 2 * Math.PI * i / this.pathConfig.points
+      let x = Math.round(this.pathConfig.width + r * Math.cos(t))
+      let y = Math.round(this.pathConfig.width + r * Math.sin(t))
+      segments.push(new paper.Segment(new paper.Point(x, y)))
     }
-    // push the last point
-    points.push(lastPoint)
-
-    // last but not least, add the reall last point in view center
-    points.push(paper.view.center)
-
-    // all ready, add the path
-    let path = new paper.Path({
-      segments: points,
+    this.circle = new paper.Path({
+      segments: segments,
       strokeColor: 'black',
       fillColor: 'black',
       closed: true,
       strokeWidth: 1
     })
-
-    path.reference = _.cloneDeep(path.segments)
-
-    this.cluster = []
-    this.cluster.push(path)
-    for (var i = 1; i < 4; i++) {
-      let clonedPath = path.clone()
-      clonedPath.rotate(90 * i, paper.view.center)
-      clonedPath.reference = _.cloneDeep(clonedPath.segments)
-      this.cluster.push(clonedPath)
-    }
-
-    //
-    // _.each(this.path.segments, (segment, index) => {
-    //   console.log(segment);
-    // })
-    // _.each(this.path.roots, (segment, index) => {
-    //   console.log(segment);
-    // })
+    this._positionCircle()
+    this.circle.rootSegments = _.cloneDeep(this.circle.segments)
   }
 
-    // _drawPoints (pathCluster) {
-    //   _.each(pathCluster, (path, index) => {
-    //     var angle = index * 2 * Math.PI / path.segments.length - Math.PI / 500;
-    //     // set top left
-    //     let point = new paper.Point(settings.window.x / 2 - AudioParser.getAverageFrequency(100, 200), settings.window.x / 2 - AudioParser.getAverageFrequency(100, 200))
-    //     if (index === 1) {
-    //       path.add(new paper.Point(settings.window.x / 2 - AudioParser.getAverageFrequency(100, 200), settings.window.x / 2 - AudioParser.getAverageFrequency(100, 200)))
-    //     }
-    //     else {
-    //       // path.add(new paper.Point(settings.window.x / 2 + AudioParser.getAverageFrequency(100, 200), settings.window.x / 2 + AudioParser.getAverageFrequency(200, 300)));
-    //     }
-    //   })
-    // }
-    //
-    //
-    //
-    // // _addPath
-    // // ============================================
-    // // takes care of drawing a path along a quarter of circle line
-    //
-    // _addPaths () {
-    //   this.paths = []
-    //   for (var i = 0; i < this.pathConfig.sections; i++) {
-    //     this.paths[i] = []
-    //     for (var y = 0; y < this.pathConfig.sectionRepeaters; y++) {
-    //       this.paths[i][y] = new paper.Path()
-    //       this.paths[i][y].fillColor = new paper.Color(1, 0, 0)
-    //       this.paths[i][y].strokeWidth = 10
-    //     }
-    //   }
-    // }
+  _positionCircle () {
+    this.circle.translate(paper.view.center.x - this.pathConfig.width / 2, paper.view.center.y - this.pathConfig.width / 2)
+  }
+
   onMouseMove = (e) => {
-    // _.each(this.path.segments, (segment, index) => {
-    //   if (index >= 1 && index <= this.path.segments.length - 3) {
-    //     var plusOrMinus = Math.random() < 0.5 ? false : true
-    //     let vector
-    //     let rand1 = Math.floor(Math.random() * 10)
-    //     let rand2 = Math.floor(Math.random() * 10)
-    //     if (!plusOrMinus) {
-    //       vector = this.roots[index].point.subtract(new paper.Point(rand1, rand2))
-    //       vector.length = 2
-    //       segment.point = segment.point.subtract(vector)
-    //     }
-    //     else {
-    //       vector = segment.point.add(new paper.Point(rand1, rand2))
-    //       vector.length = 2
-    //       segment.point = segment.point.add(vector)
-    //     }
-    //   }
-    // })
-    // this.path.segments[0]
-    // this.path.smooth({
-    //   type: 'continuous',
-    //   from: 1,
-    //   to: this.path.segments.length - 3
-    // })
   }
 
   onResize = (e) => {
+    // this._positionCircle()
   }
 
 
