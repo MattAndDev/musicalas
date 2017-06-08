@@ -52,11 +52,13 @@ class Painter {
     let firstPoint = new paper.Segment(paper.view.center.subtract([0, this.pathConfig.width]), null, null)
     let lastPoint = new paper.Segment(paper.view.center.subtract([this.pathConfig.width, 0], null, null))
 
+
+    let testSomeMath = Math.sqrt(Math.pow(this.pathConfig.width, 2) - Math.pow(this.pathConfig.width / 2, 2))
     // draw an arc (stencilPath)
     // this is used to get all necessary point along the arc line with getPointAt
     this.stencilPath = new paper.Path.Arc({
       from: new paper.Point(paper.view.center.subtract([0, this.pathConfig.width])),
-      through: new paper.Point(paper.view.center.subtract([this.pathConfig.width, this.pathConfig.width - this.pathConfig.width / 2])),
+      through: new paper.Point(paper.view.center.subtract([this.pathConfig.width / 2, testSomeMath])),
       to: new paper.Point(paper.view.center.subtract([this.pathConfig.width, 0]))
     })
 
@@ -87,6 +89,10 @@ class Painter {
       closed: true,
       strokeWidth: 1
     })
+
+    let test = this.path.clone()
+    console.log(test);
+    test.rotate(90,paper.view.center)
     this.pathReference = _.cloneDeep(this.path.segments)
     // _.each(this.path.segments, (segment, index) => {
     //   console.log(segment);
