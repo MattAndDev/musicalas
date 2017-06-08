@@ -39,8 +39,9 @@ class Painter {
 
   render () {
     if (this.circle) {
+      let step = Math.round(AudioParser.context.frequencyData.length / this.circleConfig.points)
       for (let i = 0; i < this.circle.segments.length; i++) {
-        let freq = i <= 20 ? AudioParser.getAverageFrequency(100, 130) : AudioParser.getAverageFrequency(500, 930)
+        let freq = AudioParser.getAverageFrequency(i * step, i * step + 30)
         let r = this.circleConfig.radius + freq
         let t = 2 * Math.PI * i / this.circle.segments.length
         let x = Math.round(this.circleConfig.radius + r * Math.cos(t))
@@ -48,6 +49,7 @@ class Painter {
         this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
         this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
       }
+      this.circle.smooth()
     }
   }
 
@@ -75,6 +77,7 @@ class Painter {
     })
     this.circle.translate(paper.view.center.x - this.circleConfig.radius / 2, paper.view.center.y - this.circleConfig.radius / 2)
     this.circle.rootSegments = _.cloneDeep(this.circle.segments)
+    console.log();
   }
 
   onMouseMove = (e) => {
