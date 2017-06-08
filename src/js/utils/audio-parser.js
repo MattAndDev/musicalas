@@ -42,7 +42,7 @@ class AudioParser extends EventEmitter {
     // reate an analyzer node
     .then(this._createAalyser.bind(this))
     // all ready -> ship it
-    .then(() => { this.emit('ready') })
+    .then(() => { this.emit('ready'); this.play() })
   }
 
   // getAverageFrequency()
@@ -53,7 +53,9 @@ class AudioParser extends EventEmitter {
   // end -> integer
   // @returns
   // total -> integer
+
   getAverageFrequency (start, end) {
+    this.analyser.getByteFrequencyData(this.context.frequencyData)
     if (isNaN(start) || isNaN(end)) return false
     let total = 0
     let length = Math.abs(start, end)
@@ -125,18 +127,10 @@ class AudioParser extends EventEmitter {
     // Create the analyser
     this.analyser = this.context.createAnalyser()
     this.analyser.smoothingTimeConstant = 0.7
-
     // Connect it to the source
     this.source.connect(this.analyser)
-
     // Parse the data
     this.context.frequencyData = new Uint8Array(this.analyser.fftSize)
-
-    // recalculate the data every 20 ms
-    setTimeout(() => {
-      this.analyser.getByteFrequencyData(this.context.frequencyData)
-      this.getAverageFrequency(100, 120)
-    }, 20)
   }
 
 
