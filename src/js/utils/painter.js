@@ -19,9 +19,9 @@ class Painter {
     }
 
     this.pathsConfig = {
-      points: 10,
-      sections: 4,
-      children: 10
+      points: 30,
+      sections: 1,
+      children: 22
     }
 
     // hook paper to provided el
@@ -56,6 +56,7 @@ class Painter {
 
   _animatePath (renderEvent) {
     _.each(this.paths, (children) => {
+
       let referenceX = AudioParser.getByteAverageFrequency(150, 190)
       let referenceY = AudioParser.getByteAverageFrequency(300, 640)
       _.each(children, (path, index) => {
@@ -85,8 +86,8 @@ class Painter {
       this.paths[i] = []
       for (var y = 0; y < this.pathsConfig.children; y++) {
         this.paths[i][y] = new paper.Path()
-        this.paths[i][y].fillColor = new paper.Color(1, 0, 0)
-        this.paths[i][y].strokeWidth = 10
+        this.paths[i][y].fillColor = 'black'
+        this.paths[i][y].strokeWidth = 1
         this.paths[i][y].smooth()
       }
     }
