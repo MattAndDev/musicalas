@@ -20,8 +20,7 @@ class Painter {
 
     this.pathsConfig = {
       points: 20,
-      sections: 4,
-      children: 4
+      sections: 9
     }
 
     // hook paper to provided el
@@ -47,23 +46,43 @@ class Painter {
   render (e) {
     if (this.circle) {
       this._animateCircle()
-      // this._animatePath(e)
+    }
+    if (this.paths) {
+      this._animatePath(e)
     }
   }
 
 
   _animatePath (renderEvent) {
-    // if (renderEvent.count >= this.pathsConfig.points) {
-    // }
-    // else {
-    // }
+    _.each(this.paths, (children) => {
+      let referenceX = AudioParser.getByteAverageFrequency(150, 190)
+      let referenceY = AudioParser.getByteAverageFrequency(300, 640)
+      _.each(children, (path, index) => {
+        let referencePoint = new paper.Point(paper.view.center.x - referenceX, paper.view.center.y - referenceY)
+        let deg = index * (360 / this.pathsConfig.sections)
+        let point = referencePoint.rotate(deg, paper.view.center)
+        path.add(point)
+        // path.add(new paper.Point(paper.view.center.x - AudioParser.getByteAverageFrequency(150,300),paper.view.center.y - AudioParser.getByteAverageFrequency(300,340)))
+        if (path.segments.length > this.pathsConfig.points) {
+          path.removeSegment(0)
+        }
+      })
+    })
+
+  }
+
+  _setPathLenght () {
+    if (renderEvent.count >= this.pathsConfig.points) {
+    }
+    else {
+    }
   }
 
   _drawPaths () {
     this.paths = []
     for (var i = 0; i < this.pathsConfig.sections; i++) {
       this.paths[i] = []
-      for (var y = 0; y < this.pathsConfig.children; y++) {
+      for (var y = 0; y < this.pathsConfig.sections; y++) {
         this.paths[i][y] = new paper.Path()
         this.paths[i][y].fillColor = new paper.Color(1, 0, 0)
         this.paths[i][y].strokeWidth = 10
@@ -77,12 +96,9 @@ class Painter {
     for (let i = 0; i < this.circle.segments.length; i++) {
       let freq = AudioParser.getByteAverageFrequency(i * step, i * step + 30)
       let r = this.circleConfig.radius + freq
-      var angle = i * 2 * Math.PI / this.circle.segments.length - Math.PI / 500
-      let x = r + r * Math.cos(angle)
-      let y = r + r * Math.sin(angle)
-      // let t = 2 * Math.PI * i / this.circle.segments.length
-      // let x = Math.round(this.circleConfig.radius + r * Math.cos(t))
-      // let y = Math.round(this.circleConfig.radius + r * Math.sin(t))
+      let t = 2 * Math.PI * i / this.circle.segments.length
+      let x = Math.round(r + r * Math.cos(t))
+      let y = Math.round(r + r * Math.sin(t))
       this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
       this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
     }
