@@ -9,10 +9,9 @@ import ScApi from 'utils/sc-api'
 class Musicalas {
 
   constructor ($el) {
-    let streamUrl = ScApi.getTrack('/tracks/293').then((data) => {
+    let streamUrl = ScApi.getTrack('/tracks/225430320').then((data) => {
       this.currentSong = data
-      console.log(data);
-      this.audioParser = new AudioParser(this.currentSong.stream_url)
+      AudioParser.setupTrack(this.currentSong.stream_url)
       this.painter = new Painter($el)
     })
   }
