@@ -15,7 +15,13 @@ class Painter {
     // configuration object for the circle
     this.circleConfig = {
       radius: 5,
-      points: 40
+      points: 120
+    }
+
+    this.pathsConfig = {
+      points: 20,
+      sections: 4,
+      children: 4
     }
 
     // hook paper to provided el
@@ -27,7 +33,8 @@ class Painter {
     paper.view.onFrame = this.render.bind(this)
 
     AudioParser.on('ready', () => {
-      this._drawCircle()
+      // this._drawCircle()
+      this._drawPaths()
     })
 
 
@@ -37,20 +44,49 @@ class Painter {
   // ============================================
   // pass on for paper render
 
-  render () {
+  render (e) {
     if (this.circle) {
-      let step = Math.round(AudioParser.context.frequencyData.length / this.circleConfig.points)
-      for (let i = 0; i < this.circle.segments.length; i++) {
-        let freq = AudioParser.getAverageFrequency(i * step, i * step + 30)
-        let r = this.circleConfig.radius + freq
-        let t = 2 * Math.PI * i / this.circle.segments.length
-        let x = Math.round(this.circleConfig.radius + r * Math.cos(t))
-        let y = Math.round(this.circleConfig.radius + r * Math.sin(t))
-        this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
-        this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
-      }
-      this.circle.smooth()
+      this._animateCircle()
+      // this._animatePath(e)
     }
+  }
+
+
+  _animatePath (renderEvent) {
+    // if (renderEvent.count >= this.pathsConfig.points) {
+    // }
+    // else {
+    // }
+  }
+
+  _drawPaths () {
+    this.paths = []
+    for (var i = 0; i < this.pathsConfig.sections; i++) {
+      this.paths[i] = []
+      for (var y = 0; y < this.pathsConfig.children; y++) {
+        this.paths[i][y] = new paper.Path()
+        this.paths[i][y].fillColor = new paper.Color(1, 0, 0)
+        this.paths[i][y].strokeWidth = 10
+      }
+    }
+    console.log(this.paths);
+  }
+
+  _animateCircle () {
+    let step = Math.round(AudioParser.context.byteFrequencyData.length / 30 / this.circleConfig.points)
+    for (let i = 0; i < this.circle.segments.length; i++) {
+      let freq = AudioParser.getByteAverageFrequency(i * step, i * step + 30)
+      let r = this.circleConfig.radius + freq
+      var angle = i * 2 * Math.PI / this.circle.segments.length - Math.PI / 500
+      let x = r + r * Math.cos(angle)
+      let y = r + r * Math.sin(angle)
+      // let t = 2 * Math.PI * i / this.circle.segments.length
+      // let x = Math.round(this.circleConfig.radius + r * Math.cos(t))
+      // let y = Math.round(this.circleConfig.radius + r * Math.sin(t))
+      this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
+      this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
+    }
+    this.circle.smooth()
   }
 
 
@@ -71,13 +107,12 @@ class Painter {
     this.circle = new paper.Path({
       segments: segments,
       strokeColor: 'black',
-      fillColor: 'black',
+      // fillColor: 'black',
       closed: true,
       strokeWidth: 1
     })
     this.circle.translate(paper.view.center.x - this.circleConfig.radius / 2, paper.view.center.y - this.circleConfig.radius / 2)
     this.circle.rootSegments = _.cloneDeep(this.circle.segments)
-    console.log();
   }
 
   onMouseMove = (e) => {
