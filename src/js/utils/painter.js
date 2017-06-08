@@ -19,8 +19,9 @@ class Painter {
     }
 
     this.pathsConfig = {
-      points: 20,
-      sections: 9
+      points: 10,
+      sections: 4,
+      children: 10
     }
 
     // hook paper to provided el
@@ -59,7 +60,7 @@ class Painter {
       let referenceY = AudioParser.getByteAverageFrequency(300, 640)
       _.each(children, (path, index) => {
         let referencePoint = new paper.Point(paper.view.center.x - referenceX, paper.view.center.y - referenceY)
-        let deg = index * (360 / this.pathsConfig.sections)
+        let deg = index * (360 / this.pathsConfig.children)
         let point = referencePoint.rotate(deg, paper.view.center)
         path.add(point)
         // path.add(new paper.Point(paper.view.center.x - AudioParser.getByteAverageFrequency(150,300),paper.view.center.y - AudioParser.getByteAverageFrequency(300,340)))
@@ -82,13 +83,13 @@ class Painter {
     this.paths = []
     for (var i = 0; i < this.pathsConfig.sections; i++) {
       this.paths[i] = []
-      for (var y = 0; y < this.pathsConfig.sections; y++) {
+      for (var y = 0; y < this.pathsConfig.children; y++) {
         this.paths[i][y] = new paper.Path()
         this.paths[i][y].fillColor = new paper.Color(1, 0, 0)
         this.paths[i][y].strokeWidth = 10
+        this.paths[i][y].smooth()
       }
     }
-    console.log(this.paths);
   }
 
   _animateCircle () {
