@@ -33,11 +33,15 @@ class Painter {
   }
 
   render () {
-    if (this.path) {
-      _.each(this.path.segments, (segment, index) => {
-        if (index === 1) {
-          this.path.segments[index].point.x = this.pathReference[index].point.x - AudioParser.getAverageFrequency(100, 130)
-          this.path.segments[index].point.y = this.pathReference[index].point.y - AudioParser.getAverageFrequency(100, 130)
+    if (this.cluster) {
+      _.each(this.cluster, (path, pathIndex) => {
+        if (pathIndex === 0) {
+          _.each(path.segments, (segment, segmentIndex) => {
+            if (segmentIndex >= 1 && segmentIndex <= this.pathConfig.points - 2)  {
+              segment.point.x = path.reference[segmentIndex].point.x - AudioParser.getAverageFrequency(100, 130)
+              segment.point.y = path.reference[segmentIndex].point.y - AudioParser.getAverageFrequency(100, 130)
+            }
+          })
         }
       })
     }
@@ -82,18 +86,26 @@ class Painter {
     points.push(paper.view.center)
 
     // all ready, add the path
-    this.path = new paper.Path({
+    let path = new paper.Path({
       segments: points,
       strokeColor: 'black',
-      // fillColor: 'black',
+      fillColor: 'black',
       closed: true,
       strokeWidth: 1
     })
 
-    let test = this.path.clone()
-    console.log(test);
-    test.rotate(90,paper.view.center)
-    this.pathReference = _.cloneDeep(this.path.segments)
+    path.reference = _.cloneDeep(path.segments)
+
+    this.cluster = []
+    this.cluster.push(path)
+    for (var i = 1; i < 4; i++) {
+      let clonedPath = path.clone()
+      clonedPath.rotate(90 * i, paper.view.center)
+      clonedPath.reference = _.cloneDeep(clonedPath.segments)
+      this.cluster.push(clonedPath)
+    }
+
+    //
     // _.each(this.path.segments, (segment, index) => {
     //   console.log(segment);
     // })
