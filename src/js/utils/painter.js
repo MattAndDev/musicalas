@@ -35,14 +35,15 @@ class Painter {
 
   render () {
     if (this.circle) {
-      // let r = this.pathConfig.width
-      // for (let i = 0; i < this.circle.segments.length; i++) {
-      //   let t = 2 * Math.PI * i / this.circle.segments.length
-      //   let x = Math.round(this.pathConfig.width + r * Math.cos(t) + AudioParser.getAverageFrequency(100, 130))
-      //   let y = Math.round(this.pathConfig.width + r * Math.sin(t) + AudioParser.getAverageFrequency(100, 130))
-      //   this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
-      //   this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
-      // }
+      for (let i = 0; i < this.circle.segments.length; i++) {
+        let freq = i <= 20 ? AudioParser.getAverageFrequency(100, 130) : AudioParser.getAverageFrequency(500, 930)
+        let r = this.pathConfig.width + freq
+        let t = 2 * Math.PI * i / this.circle.segments.length
+        let x = Math.round(this.pathConfig.width + r * Math.cos(t))
+        let y = Math.round(this.pathConfig.width + r * Math.sin(t))
+        this.circle.segments[i].point.x = this.circle.rootSegments[i].point.x + x
+        this.circle.segments[i].point.y = this.circle.rootSegments[i].point.y + y
+      }
     }
   }
   // _addPath
