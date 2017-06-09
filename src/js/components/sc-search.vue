@@ -7,8 +7,9 @@
 
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
-  <canvas class="wall" resize>
-  </canvas >
+  <form class="scform" action="index.html" method="post">
+
+  </form>
 </template>
 
 <script>
