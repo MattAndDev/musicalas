@@ -27,6 +27,7 @@ class ScApi {
   getTrack (id) {
     return new Promise((resolve, reject) => {
       SC.get(`tracks/${id}`).then((data, err) => {
+        console.log(data);
         resolve(data)
       })
     })

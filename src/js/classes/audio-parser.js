@@ -39,8 +39,10 @@ class AudioParser extends EventEmitter {
     this._getArrayBufferFromUrl(streamUrl)
     // build audioCotnext source from buffer
     .then(this._buildSourceFromBuffer.bind(this))
-    // reate an analyzer node
-    .then(this._createAalyser.bind(this))
+    // create an analyzer node
+    .then(this._createAnalyser.bind(this))
+    // create volume (gain) node
+    .then(this._createVolume.bind(this))
     // all ready -> ship it
     .then(() => { this.emit('ready'); this.play() })
   }
@@ -71,11 +73,13 @@ class AudioParser extends EventEmitter {
 
   // play()
   // ============================================
-  // just connecting source to destination
+  // ship it
 
   play () {
-    this.analyser.connect(this.context.destination)
+    this.source.start(0)
   }
+
+
 
   // _buildSourceFromBuffer
   // ============================================
@@ -88,7 +92,6 @@ class AudioParser extends EventEmitter {
       return this.context.decodeAudioData(this.arrayBuffer, (buffer) => {
         this.source = this.context.createBufferSource()
         this.source.buffer = buffer
-        this.source.start(0)
         resolve()
       })
     })
@@ -101,7 +104,7 @@ class AudioParser extends EventEmitter {
   // ============================================
   // uses vue-resource to get array buffer from passed url
   // @params:
-  // streamUrl -> strign
+  // streamUrl -> string
   // @resolve
   // response -> response object with arraybuffer
 
@@ -115,26 +118,36 @@ class AudioParser extends EventEmitter {
     })
   }
 
-  // _getStream()
+  // _createAalyser()
   // ============================================
-  // uses vue-resource to get array buffer from passed url
-  // @params:
-  // streamUrl -> strign
-  // @resolve
-  // response -> response object with arraybuffer
 
+  _createAnalyser () {
+    return new Promise((resolve, reject) => {
+      // Create the analyser
+      this.analyser = this.context.createAnalyser()
+      this.analyser.smoothingTimeConstant = 0.3
+      // Connect it to the source
+      this.source.connect(this.analyser)
+      // the amount of hz analysed for every poin in frequenxydata
+      this.arrayBandwidth = this.context.sampleRate / this.analyser.fftSize
+      // Parse the data
+      this.context.byteFrequencyData = new Uint8Array(this.analyser.fftSize)
+      resolve()
+    })
+  }
 
-  // Set up the Analiser node
-  _createAalyser () {
-    // Create the analyser
-    this.analyser = this.context.createAnalyser()
-    this.analyser.smoothingTimeConstant = 0.3
-    // Connect it to the source
-    this.source.connect(this.analyser)
-    // the amount of hz analysed for every poin in frequenxydata
-    this.arrayBandwidth = this.context.sampleRate / this.analyser.fftSize
-    // Parse the data
-    this.context.byteFrequencyData = new Uint8Array(this.analyser.fftSize)
+  // _createVolume()
+  // ============================================
+
+  _createVolume () {
+    return new Promise((resolve, reject) => {
+      // Create volume with gain node
+      this.volume = this.context.createGain()
+      this.source.connect(this.volume)
+      this.volume.connect(this.context.destination)
+      this.volume.gain.value = 0
+      resolve()
+    })
   }
 
 
