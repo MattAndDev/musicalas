@@ -7,8 +7,9 @@
 
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
-  <form class="scform" action="index.html" method="post">
-
+  <form v-on:submit.prevent="onSubmit"  class="scForm">
+    <input ref="searchQueryField" type="text" name="" value="" placeholder="Song name, artist, something">
+    <input type="submit" name="" value="Search">
   </form>
 </template>
 
@@ -21,9 +22,14 @@ import store from 'store'
 import Musicalas from 'utils/musicalas'
 
 export default {
-  name: 'wall',
+  name: 'sc-search',
+  methods: {
+    onSubmit () {
+      console.log(this.$refs.searchQueryField.value);
+      console.log(this.$refs);
+    }
+  },
   mounted () {
-    let magic = new Musicalas(this.$refs.wall)
   }
 }
 </script>

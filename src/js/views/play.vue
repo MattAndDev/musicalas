@@ -7,7 +7,9 @@
 
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
-  <wall></wall>
+  <div class="view view-etry">
+    <wall></wall>
+  </div>
 </template>
 
 <script>

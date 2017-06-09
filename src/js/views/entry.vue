@@ -4,7 +4,9 @@
 
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
-  <sc-search></sc-search>
+  <div class="view view-etry">
+    <sc-search></sc-search>
+  </div>
 </template>
 
 <script>
