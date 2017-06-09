@@ -5,17 +5,23 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from 'views/home.vue'
+import Play from 'views/play.vue'
+import Entry from 'views/entry.vue'
 
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'Entry',
+      component: Entry
     },
+    {
+      path: '/play',
+      name: 'Play',
+      component: Play
+    }
   ]
 })
