@@ -49,7 +49,7 @@ class Painter {
       this._animateCircle()
     }
     if (this.paths) {
-      this._animatePath(e)
+      this._animatePaths(e)
     }
   }
 
