@@ -58,11 +58,13 @@ class AudioParser extends EventEmitter {
     this.analyser.getByteFrequencyData(this.context.byteFrequencyData)
     if (isNaN(start) || isNaN(end)) return false
     let total = 0
+    start = parseInt(start)
+    end = parseInt(end)
     let length = Math.abs(start, end)
     for (var i = start; i < end; i++) {
       total = total + this.context.byteFrequencyData[i]
     }
-    return parseInt(total / length)
+    return parseInt(total / length) * 3 // hacky
   }
 
 
@@ -72,7 +74,7 @@ class AudioParser extends EventEmitter {
   // just connecting source to destination
 
   play () {
-    this.source.connect(this.context.destination)
+    this.analyser.connect(this.context.destination)
   }
 
   // _buildSourceFromBuffer
@@ -129,6 +131,8 @@ class AudioParser extends EventEmitter {
     this.analyser.smoothingTimeConstant = 0.3
     // Connect it to the source
     this.source.connect(this.analyser)
+    // the amount of hz analysed for every poin in frequenxydata
+    this.arrayBandwidth = this.context.sampleRate / this.analyser.fftSize
     // Parse the data
     this.context.byteFrequencyData = new Uint8Array(this.analyser.fftSize)
   }

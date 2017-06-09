@@ -15,7 +15,7 @@ class Painter {
 
     this.pathsConfig = {
       points: 25,
-      sections: 10,
+      sections: 15,
       children: 14
     }
 
@@ -73,8 +73,10 @@ class Painter {
         let point = referencePoint.rotate(deg, paper.view.center)
         // add it
         path.add(point)
+        // smooth it
+        path.smooth()
         // if path has reached it's masximum length, remove last
-        if (path.segments.length > this.pathsConfig.points) {
+        if (path.segments.length > this.pathsConfig.points - mainIndex) {
           path.removeSegment(0)
         }
       })
@@ -92,24 +94,29 @@ class Painter {
     // scaffold
     this.paths = []
     this.ranges = []
+    // set step
+    // NOTE: we want to analyze a range between 0 and 10000 Hz.
+    // therefore the follwoing: range / each range of array (24) / numebr of sections
+    let step = (15000 / AudioParser.arrayBandwidth) / this.pathsConfig.sections  // should be about 100 herz
+    console.log('each path analyzes with increment of' + (step * AudioParser.arrayBandwidth) );
+    let lastStep = 0
     // iterate trugh paths
     for (var i = 0; i < this.pathsConfig.sections; i++) {
       // scaffold
       this.paths[i] = []
       // assign to every section an x/y analyzer point
-      let randX = Math.floor(Math.random() * 1000) + 1
-      let randY = Math.floor(Math.random() * 1000) + 1
-      let randIncrement = Math.floor(Math.random() * 300) + 1
+      // let randIncrement = Math.floor(Math.random() * 300) + 1
       this.ranges[i] = {
         x: [
-          randX,
-          randX + randIncrement
+          lastStep,
+          lastStep + step / 2
         ],
         y: [
-          randY,
-          randY + randIncrement
+          lastStep + step / 2,
+          lastStep + step
         ]
       }
+      lastStep = lastStep + step
       // loop trough children and just scaffold path
       for (var y = 0; y < this.pathsConfig.children; y++) {
         this.paths[i][y] = new paper.Path()
