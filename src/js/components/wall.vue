@@ -31,8 +31,13 @@ export default {
   },
   mounted () {
     // no song sleected, roll back
-    if (!store.currentTrack) this.$router.push('/')
+    if (!store.currentTrack) {
+      this.$router.push('/')
+      return false
+    }
+    // setup the track on the audio parser
     AudioParser.setupTrack(store.currentTrack.stream_url)
+    // dock painter on element
     let painter = new Painter(this.$refs.wall)
     AudioParser.on('ready', () => {
       this.isLoading = false
