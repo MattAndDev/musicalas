@@ -12,22 +12,18 @@ import env from 'env'
 
 class Painter {
   constructor ($el) {
-    // configuration object for the circle
-    this.circleConfig = {
-      radius: 5,
-      points: 120
-    }
 
     this.pathsConfig = {
-      points: 35,
+      points: 25,
       sections: 10,
-      children: 10
+      children: 14
     }
 
-    // hook paper to provided el
-    paper.setup($el)
 
-    // pass on event handlers
+  }
+
+  setUp ($el) {
+    paper.setup($el)
     paper.view.onResize = this.onResize.bind(this)
     paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
@@ -35,10 +31,7 @@ class Painter {
     AudioParser.on('ready', () => {
       this._drawPaths()
     })
-
-
   }
-
   // render
   // ============================================
   // pass on for paper render
@@ -47,6 +40,15 @@ class Painter {
     if (this.paths) {
       this._animatePaths(e)
     }
+  }
+
+  // downloadSvg
+  // ============================================
+  // wip, basic export for svg
+
+  downloadSvg () {
+    var url = 'data:image/svg+xml;utf8,' + encodeURIComponent(paper.project.exportSVG({asString: true}))
+    window.open(url)
   }
 
 
@@ -80,13 +82,6 @@ class Painter {
 
   }
 
-  _setPathLenght () {
-    if (renderEvent.count >= this.pathsConfig.points) {
-    }
-    else {
-    }
-  }
-
 
   // _drawPaths
   // ============================================
@@ -118,12 +113,13 @@ class Painter {
       // loop trough children and just scaffold path
       for (var y = 0; y < this.pathsConfig.children; y++) {
         this.paths[i][y] = new paper.Path()
-        this.paths[i][y].strokeColor = 'black'
+        this.paths[i][y].fillColor = 'black'
         this.paths[i][y].strokeWidth = 1
         this.paths[i][y].smooth()
       }
     }
   }
+
 
   onMouseMove = (e) => {
   }
@@ -135,4 +131,4 @@ class Painter {
 
 }
 
-export default Painter
+export default new Painter()
