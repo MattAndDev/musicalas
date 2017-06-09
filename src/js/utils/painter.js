@@ -54,11 +54,17 @@ class Painter {
   }
 
 
-  _animatePath (renderEvent) {
+  // _animatePath
+  // ============================================
+  // handles animatons for this.paths
+  // wip version
+  _animatePaths (renderEvent) {
+    // each group
     _.each(this.paths, (children) => {
-
+      // set reference coordinates
       let referenceX = AudioParser.getByteAverageFrequency(150, 190)
       let referenceY = AudioParser.getByteAverageFrequency(300, 640)
+      // each path in group
       _.each(children, (path, index) => {
         let referencePoint = new paper.Point(paper.view.center.x - referenceX, paper.view.center.y - referenceY)
         let deg = index * (360 / this.pathsConfig.children)
