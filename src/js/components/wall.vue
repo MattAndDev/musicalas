@@ -20,8 +20,8 @@ import Vue from 'Vue'
 // store
 import store from 'store'
 // utils
-import AudioParser from 'utils/audio-parser'
-import Painter from 'utils/painter'
+import AudioParser from 'classes/audio-parser'
+import Painter from 'classes/painter'
 
 export default {
   name: 'wall',

@@ -186,6 +186,7 @@ export default {
       alias: {
         vue: 'vue/dist/vue.common.js',
         utils: `${src}/js/utils`,
+        classes: `${src}/js/classes`,
         components: `${src}/js/components`,
         views: `${src}/js/views`,
         settings: `${src}/js/utils/settings`,

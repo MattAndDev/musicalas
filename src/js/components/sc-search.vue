@@ -28,7 +28,7 @@ import _ from 'lodash'
 // store
 import store from 'store'
 // utils
-import ScApi from 'utils/sc-api'
+import ScApi from 'classes/sc-api'
 import msToS from 'utils/ms-to-s'
 
 export default {

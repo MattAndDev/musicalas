@@ -6,7 +6,7 @@ import _ from 'lodash'
 import paper from 'paper'
 // utils
 import settings from 'settings'
-import AudioParser from 'utils/audio-parser'
+import AudioParser from 'classes/audio-parser'
 // env
 import env from 'env'
 
