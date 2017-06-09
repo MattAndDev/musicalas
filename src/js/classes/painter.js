@@ -125,7 +125,6 @@ class Painter {
   }
 
   onResize = (e) => {
-    // this._positionCircle()
   }
 
 
