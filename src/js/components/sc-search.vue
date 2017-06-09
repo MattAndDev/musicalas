@@ -46,10 +46,10 @@ export default {
       if (query.length === 0) return false
       // else search via ScApi
       ScApi.search(query).then((tracks) => {
+        // if no results
+        if (!tracks.length) alert(`Sorry nothign found on soundcloud for ${query}`)
         // convert track duration from millis to minutes + seconds
-        _.each(tracks, (track) => {
-          track.duration = msToS(track.duration)
-        })
+        _.each(tracks, (track) => { track.duration = msToS(track.duration) })
         // then expose tracks
         this.tracks = tracks
       })

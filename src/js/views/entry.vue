@@ -18,7 +18,7 @@ import store from 'store'
 import ScSearch from 'components/sc-search.vue'
 
 export default {
-  name: 'home',
+  name: 'entry',
   components: {
     ScSearch
   },
