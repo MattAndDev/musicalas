@@ -15,8 +15,8 @@ class Painter {
 
     this.pathsConfig = {
       points: 25,
-      sections: 4,
-      children: 4
+      sections: 20,
+      children: 20
     }
 
 
@@ -66,36 +66,17 @@ class Painter {
       _.each(children, (path, index) => {
         // set the first point
         _.each(path, (subPath, subIndex) => {
-          let point = new paper.Point(paper.view.center.x - this.ranges[mainIndex][subIndex].x[subIndex], paper.view.center.y - this.ranges[mainIndex][subIndex].y[subIndex])
+          let point = new paper.Point(
+            paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].x[0],this.ranges[mainIndex][subIndex].x[1]),
+            paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].y[0],this.ranges[mainIndex][subIndex].y[1])
+          )
           let deg = index * (360 / this.pathsConfig.children)
           point = point.rotate(deg, paper.view.center)
           subPath.add(point)
-          if (subPath.segments.length > this.pathsConfig.points - mainIndex) {
+          if (subPath.segments.length > this.pathsConfig.points) {
             subPath.removeSegment(0)
           }
         })
-        // let referencepoints = [
-        //
-        // ]
-        // let referencePointA =
-        // let referencePointB = new paper.Point(paper.view.center.x - referenceXB, paper.view.center.y - referenceYB)
-        // // calculate degs
-        // let degA = index * (360 / this.pathsConfig.children)
-        // let degB = index * (360 / this.pathsConfig.children) + (360 / this.pathsConfig.children) / 2
-        // // rotate the point
-        // let pointB = referencePointB.rotate(degB, paper.view.center)
-        // // add it
-        // path[1].add(pointB)
-        // smooth it
-        // path[0].smooth({
-        //   type: 'geometric',
-        //   factor: 0.2
-        // })
-        // if path has reached it's masximum length, remove last
-        if (path[0].segments.length > this.pathsConfig.points - mainIndex) {
-          path[0].removeSegment(0)
-          path[1].removeSegment(0)
-        }
       })
     })
 

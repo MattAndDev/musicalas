@@ -57,16 +57,20 @@ class AudioParser extends EventEmitter {
   // total -> integer
 
   getByteAverageFrequency (start, end) {
+    start = parseInt(start)
+    end = parseInt(end)
     this.analyser.getByteFrequencyData(this.context.byteFrequencyData)
     if (isNaN(start) || isNaN(end)) return false
     let total = 0
-    start = parseInt(start)
-    end = parseInt(end)
-    let length = Math.abs(start, end)
-    for (var i = start; i < end; i++) {
-      total = total + this.context.byteFrequencyData[i]
+    let length = end > start ? Math.abs(start, end) : Math.abs(end, start)
+    for (var i = 0; i < length; i++) {
+      if (this.context.byteFrequencyData[i]) {
+        total = total + this.context.byteFrequencyData[i]
+      }
     }
-    return parseInt(total / length) * 3 // hacky
+    let result = parseInt(total / length)
+    if (isNaN(result)) return 0
+    return result
   }
 
 
