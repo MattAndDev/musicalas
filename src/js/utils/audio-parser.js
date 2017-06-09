@@ -131,9 +131,6 @@ class AudioParser extends EventEmitter {
     this.source.connect(this.analyser)
     // Parse the data
     this.context.byteFrequencyData = new Uint8Array(this.analyser.fftSize)
-    setTimeout(() => {
-      console.log(this.analyser.getByteFrequencyData(this.context.byteFrequencyData));
-    }, 2000)
   }
 
 
