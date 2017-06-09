@@ -22,11 +22,36 @@ class ScApi {
   // @params:
   // id -> string
   // @return:
-  // streamUrl -> string
+  // resolve -> object (song data)
+
   getTrack (id) {
     return new Promise((resolve, reject) => {
       SC.get(id).then((data, err) => {
         resolve(data)
+      })
+    })
+  }
+
+  // search
+  // ============================================
+  // searches soundcloud for given query
+  // returns a filtered result (streamable -> true)
+  // @params:
+  // query -> string
+  // @return:
+  // resolve -> array (tracks)
+
+  search (query) {
+    return new Promise((resolve, reject) => {
+      let queryParams = {
+        q: query,
+        streamable: true
+      }
+      SC.get('/tracks', queryParams).then((tracks) => {
+        // remove not streamable tracks
+        // there's no fitler opt for this
+        tracks = _.remove(tracks, (o) => { return o.streamable === true })
+        resolve(tracks)
       })
     })
   }
