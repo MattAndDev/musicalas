@@ -26,7 +26,6 @@ import _ from 'lodash'
 // store
 import store from 'store'
 // utils
-import Musicalas from 'utils/musicalas'
 import ScApi from 'utils/sc-api'
 
 export default {
