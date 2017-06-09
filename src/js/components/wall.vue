@@ -8,6 +8,7 @@
 <!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
   <div class="wall">
+    <span v-on:click="downloadSvg">get svg</span>
     <div v-if="isLoading" class="wall_loader"></div>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
   </div>
@@ -38,10 +39,15 @@ export default {
     // setup the track on the audio parser
     AudioParser.setupTrack(store.currentTrack.stream_url)
     // dock painter on element
-    let painter = new Painter(this.$refs.wall)
+    Painter.setUp(this.$refs.wall)
     AudioParser.on('ready', () => {
       this.isLoading = false
     })
+  },
+  methods: {
+    downloadSvg () {
+      Painter.downloadSvg()
+    }
   }
 }
 </script>

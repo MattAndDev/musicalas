@@ -13,7 +13,9 @@
       <input type="submit" name="" value="Search">
     </form>
     <ul class="scSearch_results" v-if="tracks">
-      <li v-for="track in tracks" v-on:click='onSongSelect' :id="track.id" class="scSearch_results_item">{{track.title}}</li>
+      <li v-for="track in tracks" v-on:click='onSongSelect' :id="track.id" class="scSearch_results_item">
+        {{track.title}} - {{track.duration}}
+      </li>
     </ul>
   </div>
 </template>
@@ -27,6 +29,7 @@ import _ from 'lodash'
 import store from 'store'
 // utils
 import ScApi from 'utils/sc-api'
+import msToS from 'utils/ms-to-s'
 
 export default {
   name: 'sc-search',
@@ -43,6 +46,10 @@ export default {
       if (query.length === 0) return false
       // else search via ScApi
       ScApi.search(query).then((tracks) => {
+        // convert track duration from millis to minutes + seconds
+        _.each(tracks, (track) => {
+          track.duration = msToS(track.duration)
+        })
         // then expose tracks
         this.tracks = tracks
       })
