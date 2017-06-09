@@ -19,9 +19,9 @@ class Painter {
     }
 
     this.pathsConfig = {
-      points: 30,
-      sections: 1,
-      children: 22
+      points: 35,
+      sections: 10,
+      children: 10
     }
 
     // hook paper to provided el
@@ -57,20 +57,25 @@ class Painter {
   // _animatePath
   // ============================================
   // handles animatons for this.paths
-  // wip version
+
   _animatePaths (renderEvent) {
     // each group
-    _.each(this.paths, (children) => {
+    _.each(this.paths, (children, mainIndex) => {
       // set reference coordinates
-      let referenceX = AudioParser.getByteAverageFrequency(150, 190)
-      let referenceY = AudioParser.getByteAverageFrequency(300, 640)
       // each path in group
+      let referenceX = AudioParser.getByteAverageFrequency(this.ranges[mainIndex].x[0], this.ranges[mainIndex].x[1])
+      let referenceY = AudioParser.getByteAverageFrequency(this.ranges[mainInde x].y[0], this.ranges[mainIndex].y[1])
+      // loop trough children
       _.each(children, (path, index) => {
+        // set the first point
         let referencePoint = new paper.Point(paper.view.center.x - referenceX, paper.view.center.y - referenceY)
+        // calculate degs
         let deg = index * (360 / this.pathsConfig.children)
+        // rotate the point
         let point = referencePoint.rotate(deg, paper.view.center)
+        // add it
         path.add(point)
-        // path.add(new paper.Point(paper.view.center.x - AudioParser.getByteAverageFrequency(150,300),paper.view.center.y - AudioParser.getByteAverageFrequency(300,340)))
+        // if path has reached it's masximum length, remove last
         if (path.segments.length > this.pathsConfig.points) {
           path.removeSegment(0)
         }
@@ -86,15 +91,38 @@ class Painter {
     }
   }
 
+
+  // _drawPaths
+  // ============================================
+  // takes care of drawing the paths to be aniamted
+  // note that this is configured via the this.pathsConfig
+
   _drawPaths () {
+    // scaffold
     this.paths = []
+    this.ranges = []
+    // iterate trugh path
     for (var i = 0; i < this.pathsConfig.sections; i++) {
       this.paths[i] = []
+      let randX = Math.floor(Math.random() * 1000) + 1
+      let randY = Math.floor(Math.random() * 1000) + 1
+      let randIncrement = Math.floor(Math.random() * 300) + 1
+      this.ranges[i] = {
+        x: [
+          randX,
+          randX + randIncrement
+        ],
+        y: [
+          randY,
+          randY + randIncrement
+        ]
+      }
       for (var y = 0; y < this.pathsConfig.children; y++) {
         this.paths[i][y] = new paper.Path()
         this.paths[i][y].fillColor = 'black'
         this.paths[i][y].strokeWidth = 1
         this.paths[i][y].smooth()
+        console.log(this.paths[i][y].ranges)
       }
     }
   }
