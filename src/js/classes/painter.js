@@ -91,7 +91,7 @@ class Painter {
     this.ranges = []
     // step -> total analized bandwidth / bandwidth of each array buffer in Audioparse / sections to be analized
     let step = (this.config.alanalyzedBandWidth / AudioParser.arrayBandwidth) / this.config.analyzerRanges
-    console.log(`Each range is analyzing ~ ${step * AudioParser.arrayBandwidth}Hz` )
+    console.log(`Each range is analyzing ~ ${step * AudioParser.arrayBandwidth}Hz`)
     let lastStep = 0
     // iterate trugh paths
     for (var i = 0; i < this.config.analyzerRanges; i++) {
