@@ -78,6 +78,11 @@ class AudioParser extends EventEmitter {
 
   play () {
     this.source.start(0)
+    this.source.onended = this._onSourceEnd.bind(this)
+  }
+
+  _onSourceEnd () {
+    this.emit('end')
   }
 
 
@@ -152,7 +157,7 @@ class AudioParser extends EventEmitter {
       this.volume = this.context.createGain()
       this.source.connect(this.volume)
       this.volume.connect(this.context.destination)
-      this.volume.gain.value = 0
+      // this.volume.gain.value = 0
       resolve()
     })
   }

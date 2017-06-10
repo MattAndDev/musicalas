@@ -9,7 +9,7 @@
     </form>
     <ul class="scSearch_results" v-if="tracks">
       <li v-for="track in tracks" v-on:click='onSongSelect' :id="track.id" class="scSearch_results_item">
-        {{track.title}} - {{track.duration}}
+        {{track.title}} - {{track.parsedDuration}}
       </li>
     </ul>
   </div>
@@ -44,7 +44,7 @@ export default {
         // if no results
         if (!tracks.length) alert(`Sorry nothign found on soundcloud for ${query}`)
         // convert track duration from millis to minutes + seconds
-        _.each(tracks, (track) => { track.duration = msToS(track.duration) })
+        _.each(tracks, (track) => { track.parsedDuration = msToS(track.duration) })
         // then expose tracks
         this.tracks = tracks
       })
