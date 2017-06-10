@@ -15,8 +15,8 @@ class Painter {
 
     this.pathsConfig = {
       points: 25,
-      sections: 20,
-      children: 20
+      sections: 6,
+      children: 5
     }
 
 
@@ -67,12 +67,13 @@ class Painter {
         // set the first point
         _.each(path, (subPath, subIndex) => {
           let point = new paper.Point(
-            paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].x[0],this.ranges[mainIndex][subIndex].x[1]),
-            paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].y[0],this.ranges[mainIndex][subIndex].y[1])
+            paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].x[0], this.ranges[mainIndex][subIndex].x[1]),
+            paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].y[0], this.ranges[mainIndex][subIndex].y[1])
           )
           let deg = index * (360 / this.pathsConfig.children)
           point = point.rotate(deg, paper.view.center)
           subPath.add(point)
+          subPath.smooth()
           if (subPath.segments.length > this.pathsConfig.points) {
             subPath.removeSegment(0)
           }
@@ -116,8 +117,9 @@ class Painter {
       // loop trough children and just scaffold path
       for (var y = 0; y < this.pathsConfig.children; y++) {
         let pathConfig = {
-          fillColor: 'black',
-          strokeWidth: 1
+          fillColor: '#333333',
+          closed: true,
+          opacity: 0.5
         }
         this.paths[i][y] = [new paper.Path(pathConfig), new paper.Path(pathConfig)]
       }
