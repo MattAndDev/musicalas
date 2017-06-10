@@ -4,11 +4,15 @@
 // libs
 import _ from 'lodash'
 import paper from 'paper'
+import Vue from 'Vue'
+import VueResource from 'vue-resource'
 // utils
 import settings from 'settings'
 import AudioParser from 'classes/audio-parser'
 // env
 import env from 'env'
+// store
+import store from 'store'
 
 class Painter {
   constructor ($el) {
@@ -19,8 +23,7 @@ class Painter {
       radialRepeaters: 10,
       alanalyzedBandWidth: 15000
     }
-
-
+    Vue.use(VueResource)
   }
 
   setUp ($el) {
@@ -28,8 +31,10 @@ class Painter {
     paper.view.onResize = this.onResize.bind(this)
     paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
-
     AudioParser.on('ready', () => {
+      this.id = this._createId(
+        store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters
+      )
       this._drawPaths()
     })
   }
@@ -43,13 +48,33 @@ class Painter {
     }
   }
 
-  // downloadSvg
-  // ============================================
-  // wip, basic export for svg
+  _createId (string) {
+    let hash = 0
+    let i
+    let chr
+    if (string.length === 0) return hash
+    for (i = 0; i < string.length; i++) {
+      chr = string.charCodeAt(i)
+      hash = ((hash << 5) - hash) + chr
+      hash |= 0 // Convert to 32bit integer
+    }
+    return hash
+  }
 
-  downloadSvg () {
-    var url = 'data:image/svg+xml;utf8,' + encodeURIComponent(paper.project.exportSVG({asString: true}))
-    window.open(url)
+  // saveSvg
+  // ============================================
+
+  saveSvg (timeStamp) {
+    let svg = {
+      time: timeStamp,
+      id: this.id,
+      raw: paper.project.exportSVG({bounds: 'view', asString: true})
+    }
+    Vue.http.post('http://localhost:3000/api/post/svg', svg, {
+      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    }).then(res => {
+      console.log(res)
+    })
   }
 
 
