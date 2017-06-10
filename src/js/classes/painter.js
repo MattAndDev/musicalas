@@ -13,10 +13,11 @@ import env from 'env'
 class Painter {
   constructor ($el) {
 
-    this.pathsConfig = {
+    this.config = {
       points: 25,
       analyzerRanges: 6,
-      children: 10
+      children: 10,
+      alanalyzedBandWidth: 15000
     }
 
 
@@ -67,10 +68,10 @@ class Painter {
             paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
             paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = degreeIndex * (360 / this.pathsConfig.children)
+          let deg = degreeIndex * (360 / this.config.children)
           point = point.rotate(deg, paper.view.center)
           path.add(point)
-          if (path.segments.length > this.pathsConfig.points) {
+          if (path.segments.length > this.config.points) {
             path.removeSegment(0)
           }
         })
@@ -83,19 +84,17 @@ class Painter {
   // _drawPaths
   // ============================================
   // takes care of drawing the paths to be aniamted
-  // note that this is configured via the this.pathsConfig
+  // note that this is configured via the this.config
 
   _drawPaths () {
     // scaffold
     this.ranges = []
-    // set step
-    // NOTE: we want to analyze a range between 0 and 15000 Hz.
-    // therefore the follwoing: range / each range of array (24) / numebr of analyzerRanges
-    let step = (15000 / AudioParser.arrayBandwidth) / this.pathsConfig.analyzerRanges  // should be about 100 herz
-    console.log('each path analyzes with increment of' + (step * AudioParser.arrayBandwidth) )
+    // step -> total analized bandwidth / bandwidth of each array buffer in Audioparse / sections to be analized
+    let step = (this.config.alanalyzedBandWidth / AudioParser.arrayBandwidth) / this.config.analyzerRanges
+    console.log(`Each range is analyzing ~ ${step * AudioParser.arrayBandwidth}Hz` )
     let lastStep = 0
     // iterate trugh paths
-    for (var i = 0; i < this.pathsConfig.analyzerRanges; i++) {
+    for (var i = 0; i < this.config.analyzerRanges; i++) {
       this.ranges[i] = {}
       // scaffold
       this.ranges[i].frequencies =
@@ -112,7 +111,7 @@ class Painter {
       lastStep = lastStep + step
       this.ranges[i].paths = []
       // loop trough children and just scaffold path
-      for (var y = 0; y < this.pathsConfig.children; y++) {
+      for (var y = 0; y < this.config.children; y++) {
         let pathConfig = {
           fillColor: '#333333',
           opacity: 0.5
