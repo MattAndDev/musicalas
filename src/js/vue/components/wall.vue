@@ -9,7 +9,6 @@
 <template>
   <div class="wall">
     <span v-on:click="downloadSvg">get svg</span>
-    <div v-if="isLoading" class="wall_loader"></div>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
   </div>
 </template>
@@ -20,29 +19,13 @@ import Vue from 'Vue'
 // store
 import store from 'store'
 // utils
-import AudioParser from 'classes/audio-parser'
 import Painter from 'classes/painter'
 
 export default {
   name: 'wall',
-  data () {
-    return {
-      isLoading: true
-    }
-  },
   mounted () {
-    // no song sleected, roll back
-    if (!store.currentTrack) {
-      this.$router.push('/')
-      return false
-    }
-    // setup the track on the audio parser
-    AudioParser.setupTrack(store.currentTrack.stream_url)
     // dock painter on element
     Painter.setUp(this.$refs.wall)
-    AudioParser.on('ready', () => {
-      this.isLoading = false
-    })
   },
   methods: {
     downloadSvg () {

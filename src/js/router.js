@@ -19,7 +19,7 @@ export default new Router({
       component: Entry
     },
     {
-      path: '/play',
+      path: '/play/:id?',
       name: 'Play',
       component: Play
     }
