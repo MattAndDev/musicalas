@@ -3,7 +3,7 @@
  -->
 <template>
   <div class="wall">
-    <span v-on:click="downloadSvg">get svg</span>
+    <span v-on:click="getZip">get zip</span>
     <span>{{currentTime}} / </span>
     <span>{{totalTime}}</span>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
@@ -38,7 +38,7 @@ export default {
         this.currentTime = msToS(time * 1000)
         time = time + 1
         this.time = time
-        Painter.saveSvg(this.time)
+        // Painter.saveSvg(this.time)
       }
       var clock = setInterval(() => { timer() }, 1000)
       AudioParser.on('end', () => {
@@ -47,6 +47,9 @@ export default {
     })
   },
   methods: {
+    getZip () {
+      Painter.getZip()
+    }
   }
 }
 </script>

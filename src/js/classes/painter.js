@@ -77,6 +77,19 @@ class Painter {
     })
   }
 
+  // saveSvg
+  // ============================================
+
+  getZip () {
+    Vue.http.get('http://localhost:3000/api/get/zip/' + this.id).then(res => {
+      window.open(res.body)
+      let a = document.createElement('a')
+      console.log(a);
+      a.href = res.body
+      a.click()
+    })
+  }
+
 
   // _animatePath
   // ============================================
