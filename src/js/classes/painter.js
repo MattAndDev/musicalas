@@ -15,8 +15,8 @@ class Painter {
 
     this.pathsConfig = {
       points: 25,
-      sections: 6,
-      children: 5
+      analyzerRanges: 6,
+      children: 10
     }
 
 
@@ -37,7 +37,7 @@ class Painter {
   // pass on for paper render
 
   render (e) {
-    if (this.paths) {
+    if (this.ranges) {
       this._animatePaths(e)
     }
   }
@@ -58,24 +58,20 @@ class Painter {
 
   _animatePaths (renderEvent) {
     // each group
-    _.each(this.paths, (children, mainIndex) => {
+    _.each(this.ranges, (range, rangeIndex) => {
       // set reference coordinates
-      // each path in group
-
-      // loop trough children
-      _.each(children, (path, index) => {
+      _.each(range.paths, (doublePath, degreeIndex) => {
         // set the first point
-        _.each(path, (subPath, subIndex) => {
+        _.each(doublePath, (path, index) => {
           let point = new paper.Point(
-            paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].x[0], this.ranges[mainIndex][subIndex].x[1]),
-            paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[mainIndex][subIndex].y[0], this.ranges[mainIndex][subIndex].y[1])
+            paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
+            paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = index * (360 / this.pathsConfig.children)
+          let deg = degreeIndex * (360 / this.pathsConfig.children)
           point = point.rotate(deg, paper.view.center)
-          subPath.add(point)
-          subPath.smooth()
-          if (subPath.segments.length > this.pathsConfig.points) {
-            subPath.removeSegment(0)
+          path.add(point)
+          if (path.segments.length > this.pathsConfig.points) {
+            path.removeSegment(0)
           }
         })
       })
@@ -91,37 +87,37 @@ class Painter {
 
   _drawPaths () {
     // scaffold
-    this.paths = []
     this.ranges = []
     // set step
-    // NOTE: we want to analyze a range between 0 and 10000 Hz.
-    // therefore the follwoing: range / each range of array (24) / numebr of sections
-    let step = (15000 / AudioParser.arrayBandwidth) / this.pathsConfig.sections  // should be about 100 herz
+    // NOTE: we want to analyze a range between 0 and 15000 Hz.
+    // therefore the follwoing: range / each range of array (24) / numebr of analyzerRanges
+    let step = (15000 / AudioParser.arrayBandwidth) / this.pathsConfig.analyzerRanges  // should be about 100 herz
     console.log('each path analyzes with increment of' + (step * AudioParser.arrayBandwidth) )
     let lastStep = 0
     // iterate trugh paths
-    for (var i = 0; i < this.pathsConfig.sections; i++) {
+    for (var i = 0; i < this.pathsConfig.analyzerRanges; i++) {
+      this.ranges[i] = {}
       // scaffold
-      this.paths[i] = []
+      this.ranges[i].frequencies =
+        [{
+          x: [ lastStep, lastStep + step / 2 ],
+          y: [ lastStep + step / 2, lastStep + step ]
+        },
+        {
+          y: [ lastStep, lastStep + step / 2 ],
+          x: [ lastStep + step / 2, lastStep + step ]
+        }]
       // assign to every section an x/y analyzer point
       // let randIncrement = Math.floor(Math.random() * 300) + 1
-      this.ranges[i] = [{
-        x: [ lastStep, lastStep + step / 2 ],
-        y: [ lastStep + step / 2, lastStep + step ]
-      },
-      {
-        y: [ lastStep, lastStep + step / 2 ],
-        x: [ lastStep + step / 2, lastStep + step ]
-      }]
       lastStep = lastStep + step
+      this.ranges[i].paths = []
       // loop trough children and just scaffold path
       for (var y = 0; y < this.pathsConfig.children; y++) {
         let pathConfig = {
           fillColor: '#333333',
-          closed: true,
           opacity: 0.5
         }
-        this.paths[i][y] = [new paper.Path(pathConfig), new paper.Path(pathConfig)]
+        this.ranges[i].paths[y] = [new paper.Path(pathConfig), new paper.Path(pathConfig)]
       }
     }
   }
