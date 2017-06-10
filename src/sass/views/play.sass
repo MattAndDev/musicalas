@@ -13,3 +13,13 @@
 .play_loader_msg
   +center-transform()
   text-align: center
+
+.play_loader_progress
+  +center(200px, 15px)
+  border: 1px solid $gray-dark
+  border-radius: 2px
+
+.play_loader_progress_inner
+  +pos(0, top bottom left)
+  width: 0%
+  background: $black

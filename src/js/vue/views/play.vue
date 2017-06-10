@@ -4,7 +4,10 @@
 <template>
   <div class="view view-play play">
     <div v-if="isLoading" class="play_loader">
-      <p class="play_loader_msg">loading {{percentage}}</p>
+      <div class="play_loader_progress">
+        <div v-bind:style="{width: loaderProgress}" class="play_loader_progress_inner">
+        </div>
+      </div>
     </div>
     <wall></wall>
   </div>
@@ -29,6 +32,7 @@ export default {
   data () {
     return {
       isLoading: true,
+      loaderProgress: '0%',
       percentage: 0
     }
   },
@@ -51,7 +55,7 @@ export default {
       AudioParser.setupTrack(store.currentTrack.stream_url)
     }
     AudioParser.on('loading', (percentage) => {
-      this.percentage = percentage
+      this.loaderProgress = percentage + '%'
     })
     AudioParser.on('ready', () => {
       this.isLoading = false
