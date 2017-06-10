@@ -1,11 +1,10 @@
 <!--
   Entry view-component
  -->
-
-<!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
   <div class="view view-etry">
     <sc-search></sc-search>
+    <config-form></config-form>
   </div>
 </template>
 
@@ -16,11 +15,13 @@ import Vue from 'Vue'
 import store from 'store'
 // components
 import ScSearch from 'components/sc-search.vue'
+import ConfigForm from 'components/config-form.vue'
 
 export default {
   name: 'entry',
   components: {
-    ScSearch
+    ScSearch,
+    ConfigForm
   },
   mounted () {
   }
