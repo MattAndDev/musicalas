@@ -16,7 +16,7 @@ class Painter {
     this.config = {
       points: 25,
       analyzerRanges: 6,
-      children: 10,
+      radialRepeaters: 10,
       alanalyzedBandWidth: 15000
     }
 
@@ -68,7 +68,7 @@ class Painter {
             paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
             paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = degreeIndex * (360 / this.config.children)
+          let deg = degreeIndex * (360 / this.config.radialRepeaters)
           point = point.rotate(deg, paper.view.center)
           path.add(point)
           if (path.segments.length > this.config.points) {
@@ -107,11 +107,10 @@ class Painter {
           x: [ lastStep + step / 2, lastStep + step ]
         }]
       // assign to every section an x/y analyzer point
-      // let randIncrement = Math.floor(Math.random() * 300) + 1
       lastStep = lastStep + step
       this.ranges[i].paths = []
-      // loop trough children and just scaffold path
-      for (var y = 0; y < this.config.children; y++) {
+      // loop trough radialRepeaters and just scaffold path
+      for (var y = 0; y < this.config.radialRepeaters; y++) {
         let pathConfig = {
           fillColor: '#333333',
           opacity: 0.5

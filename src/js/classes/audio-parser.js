@@ -146,7 +146,7 @@ class AudioParser extends EventEmitter {
       this.volume = this.context.createGain()
       this.source.connect(this.volume)
       this.volume.connect(this.context.destination)
-      // this.volume.gain.value = 0
+      this.volume.gain.value = 0
       resolve()
     })
   }
