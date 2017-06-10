@@ -1,11 +1,6 @@
 <!--
-  Entry view-component
-
-  This component should handle the async load of the json data
-  for the different steps of the process (perhapbs it's own content!)
+  ScSearch component
  -->
-
-<!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
   <div class="scSearch">
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">

@@ -1,11 +1,6 @@
 <!--
-  Entry view-component
-
-  This component should handle the async load of the json data
-  for the different steps of the process (perhapbs it's own content!)
+  Play view-component
  -->
-
-<!-- This template is for display purposes only, maybe loading screen can be shown -->
 <template>
   <div class="view view-play play">
     <div v-if="isLoading" class="play_loader">
