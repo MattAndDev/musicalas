@@ -112,7 +112,13 @@ class AudioParser extends EventEmitter {
 
   _getArrayBufferFromUrl (streamUrl) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(streamUrl + `?client_id=${env.scClientId}`, {responseType: 'arraybuffer'}).then(response => {
+      let opt = {
+        responseType: 'arraybuffer',
+        progress: (e) => {
+          if (e.lengthComputable) this.emit('loading', Math.round((e.loaded / e.total) * 100))
+        }
+      }
+      Vue.http.get(streamUrl + `?client_id=${env.scClientId}`, opt).then(response => {
         this.arrayBuffer = response.body
         response.status === 200 ? resolve(response.body /* <- arraybuffer */) : reject(response)
       })
