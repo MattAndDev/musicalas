@@ -22,15 +22,15 @@ class Painter {
       points: 25,
       analyzerRanges: 6,
       radialRepeaters: 10,
-      alanalyzedBandWidth: 15000
+      alanalyzedBandWidth: 15000,
+      size: 1200 //arbtrary in px
     }
     Vue.use(VueResource)
   }
 
   setUp ($el) {
-
-    settings.window.x > settings.window.y ? `${settings.window.y}px` : $el.style.height = `${settings.window.x}px`
-    this.size = parseInt($el.style.height)
+    $el.style.width = `${this.config.size}px`
+    $el.style.height = `${this.config.size}px`
     paper.setup($el)
     paper.view.onResize = this.onResize.bind(this)
     paper.view.onMouseMove = this.onMouseMove.bind(this)
