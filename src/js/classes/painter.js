@@ -70,7 +70,7 @@ class Painter {
       id: this.id,
       raw: paper.project.exportSVG({bounds: 'view', asString: true})
     }
-    Vue.http.post('http://localhost:3000/api/post/svg', svg, {
+    Vue.http.post(`${env.apiEndpoint}/save/svg`, svg, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => {
       console.log(res)
@@ -81,10 +81,9 @@ class Painter {
   // ============================================
 
   getZip () {
-    Vue.http.get('http://localhost:3000/api/get/zip/' + this.id).then(res => {
+    Vue.http.get(`${env.apiEndpoint}/get/zip/` + this.id).then(res => {
       window.open(res.body)
       let a = document.createElement('a')
-      console.log(a);
       a.href = res.body
       a.click()
     })
