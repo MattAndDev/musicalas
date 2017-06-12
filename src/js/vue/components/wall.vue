@@ -3,9 +3,15 @@
  -->
 <template>
   <div class="wall">
-    <span v-on:click="getZip">get zip</span>
-    <span>{{currentTime}} / </span>
-    <span>{{totalTime}}</span>
+    <div class="wall_controls">
+      <span v-on:click="saveSvg">save svg</span>
+      <span v-on:click="getZip">get zip</span>
+      <br>
+      <span>Saves: {{saves}}/{{availableSaves}}</span>
+      <br>
+      <span>{{currentTime}} / </span>
+      <span>{{totalTime}}</span>
+    </div>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
   </div>
 </template>
@@ -25,7 +31,9 @@ export default {
   data () {
     return {
       currentTime: 0,
-      totalTime: ''
+      totalTime: '',
+      availableSaves: 10,
+      saves: 0
     }
   },
   mounted () {
@@ -38,7 +46,6 @@ export default {
         this.currentTime = msToS(time * 1000)
         time = time + 1
         this.time = time
-        Painter.saveSvg(this.time)
       }
       var clock = setInterval(() => { timer() }, 1000)
       AudioParser.on('end', () => {
@@ -49,6 +56,16 @@ export default {
   methods: {
     getZip () {
       Painter.getZip()
+    },
+    saveSvg () {
+      if (this.saves >= this.availableSaves) {
+        alert('Sorry no more saves')
+        return false
+      }
+      else {
+        Painter.saveSvg(this.time)
+        this.saves = this.saves + 1
+      }
     }
   }
 }

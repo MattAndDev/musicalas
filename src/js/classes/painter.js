@@ -73,7 +73,6 @@ class Painter {
 
   getZip () {
     Vue.http.get(`${env.apiEndpoint}/track/get/zip/${this.id}`).then(res => {
-      window.open(res.body)
       let a = document.createElement('a')
       a.href = res.body
       a.click()
