@@ -6,6 +6,7 @@ import _ from 'lodash'
 import paper from 'paper'
 import Vue from 'Vue'
 import VueResource from 'vue-resource'
+import hash from 'string-hash'
 // utils
 import settings from 'settings'
 import AudioParser from 'classes/audio-parser'
@@ -32,7 +33,7 @@ class Painter {
     paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
     AudioParser.on('ready', () => {
-      this.id = this._createId(
+      this.id = hash(
         store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters
       )
       this._registerId()
@@ -49,19 +50,6 @@ class Painter {
     }
   }
 
-  _createId (string) {
-    let hash = 0
-    let i
-    let chr
-    if (string.length === 0) return hash
-    for (i = 0; i < string.length; i++) {
-      chr = string.charCodeAt(i)
-      hash = ((hash << 5) - hash) + chr
-      hash |= 0 // Convert to 32bit integer
-    }
-    return hash
-  }
-
   // saveSvg
   // ============================================
 
@@ -73,7 +61,7 @@ class Painter {
     Vue.http.post(`${env.apiEndpoint}/track/save/svg/${this.id}`, svg, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => {
-      console.log(res)
+      // console.log(res)
     })
   }
 
@@ -99,7 +87,7 @@ class Painter {
     Vue.http.post(`${env.apiEndpoint}/track/register/${this.id}`, data, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => {
-      console.log(res)
+      // console.log(res)
     })
   }
 
