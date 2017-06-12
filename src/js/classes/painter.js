@@ -28,8 +28,9 @@ class Painter {
   }
 
   setUp ($el) {
-    // fix the size to square
-    settings.window.x > settings.window.y ? $el.style.width = `${settings.window.y}px` : $el.style.height = `${settings.window.x}px`
+
+    settings.window.x > settings.window.y ? `${settings.window.y}px` : $el.style.height = `${settings.window.x}px`
+    this.size = parseInt($el.style.height)
     paper.setup($el)
     paper.view.onResize = this.onResize.bind(this)
     paper.view.onMouseMove = this.onMouseMove.bind(this)
