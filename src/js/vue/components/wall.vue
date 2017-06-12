@@ -38,7 +38,7 @@ export default {
         this.currentTime = msToS(time * 1000)
         time = time + 1
         this.time = time
-        // Painter.saveSvg(this.time)
+        Painter.saveSvg(this.time)
       }
       var clock = setInterval(() => { timer() }, 1000)
       AudioParser.on('end', () => {

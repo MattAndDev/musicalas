@@ -35,6 +35,7 @@ class Painter {
       this.id = this._createId(
         store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters
       )
+      this._registerId()
       this._drawPaths()
     })
   }
@@ -67,10 +68,9 @@ class Painter {
   saveSvg (timeStamp) {
     let svg = {
       time: timeStamp,
-      id: this.id,
       raw: paper.project.exportSVG({bounds: 'view', asString: true})
     }
-    Vue.http.post(`${env.apiEndpoint}/save/svg`, svg, {
+    Vue.http.post(`${env.apiEndpoint}/track/save/svg/${this.id}`, svg, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => {
       console.log(res)
@@ -81,11 +81,25 @@ class Painter {
   // ============================================
 
   getZip () {
-    Vue.http.get(`${env.apiEndpoint}/get/zip/` + this.id).then(res => {
+    Vue.http.get(`${env.apiEndpoint}/track/get/zip/${this.id}`).then(res => {
       window.open(res.body)
       let a = document.createElement('a')
       a.href = res.body
       a.click()
+    })
+  }
+  // saveSvg
+  // ============================================
+
+  _registerId () {
+    let data = {
+      track: store.currentTrack,
+      config: this.config
+    }
+    Vue.http.post(`${env.apiEndpoint}/track/register/${this.id}`, data, {
+      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    }).then(res => {
+      console.log(res)
     })
   }
 
