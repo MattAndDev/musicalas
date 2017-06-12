@@ -23,7 +23,7 @@ class Painter {
       analyzerRanges: 6,
       radialRepeaters: 10,
       alanalyzedBandWidth: 15000,
-      size: 1200 //arbtrary in px
+      size: 1200 // arbtrary in px
     }
     Vue.use(VueResource)
   }
@@ -109,7 +109,7 @@ class Painter {
             paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
             paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = degreeIndex * (360 / this.config.radialRepeaters)
+          let deg = degreeIndex * (360 / this.config.radialRepeaters) - 8.5
           point = point.rotate(deg, paper.view.center)
           path.add(point)
           if (path.segments.length > this.config.points) {
