@@ -122,7 +122,7 @@ class Painter {
             paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
             paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = degreeIndex * (360 / this.config.radialRepeaters) - 8.5
+          let deg = degreeIndex * (360 / this.config.radialRepeaters) + (360 / 8)
           point = point.rotate(deg, paper.view.center)
           path.add(point)
           if (path.segments.length > this.config.points) {
