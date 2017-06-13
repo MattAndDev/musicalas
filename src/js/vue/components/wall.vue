@@ -69,14 +69,13 @@ export default {
       }
     },
     getPoster () {
-      // if (this.saves < this.availableSaves) {
-      //   alert('Sorry more images needed')
-      //   return false
-      // }
-      // else {
-      console.log(this.$refs.posterText.value);
+      if (this.saves < this.availableSaves) {
+        alert('Sorry more images needed')
+        return false
+      }
+      else {
         Painter.getPoster(this.$refs.posterText.value)
-      // }
+      }
     }
   }
 }
