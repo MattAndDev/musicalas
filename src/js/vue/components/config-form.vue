@@ -13,6 +13,8 @@
       <input v-on:keyup="onChange" ref="radialRepeaters" type="number" name="radialRepeaters" value="10">
       <label for="analyzerRanges">Nuber of ranges to analyze <span>max ~ 14</span></label>
       <input v-on:keyup="onChange" ref="analyzerRanges" type="number" name="analyzerRanges" value="6">
+      <label for="hasMirrors">Decide if the axis get mirrored or not (mirrored == snowflake, not mirrored === spiral)</span></label><br>
+      <input v-on:change="onChange" ref="hasMirrors" type="checkbox" name="hasMirrors" checked="true">
     </form>
   </div>
 </template>
@@ -37,7 +39,12 @@ export default {
   },
   methods: {
     onChange (e) {
-      Painter.config[e.target.name] = e.target.value
+      if (e.target.type === 'checkbox') {
+        Painter.config[e.target.name] = e.target.checked
+      }
+      else {
+        Painter.config[e.target.name] = e.target.value
+      }
     }
   },
   mounted () {

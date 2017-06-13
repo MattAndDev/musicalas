@@ -23,7 +23,7 @@ class Painter {
       analyzerRanges: 6,
       radialRepeaters: 10,
       alanalyzedBandWidth: 15000,
-      hasMirrors: false,
+      hasMirrors: true,
       size: 1200 // arbtrary in px
     }
     Vue.use(VueResource)
