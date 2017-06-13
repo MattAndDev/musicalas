@@ -68,13 +68,25 @@ class Painter {
     })
   }
 
-  // saveSvg
+  // getZip
   // ============================================
 
   getZip () {
     Vue.http.get(`${env.apiEndpoint}/track/get/zip/${this.id}`).then(res => {
       let a = document.createElement('a')
       a.href = res.body
+      a.click()
+    })
+  }
+
+  // getPoster
+  // ============================================
+
+  getPoster (query) {
+    Vue.http.get(`${env.apiEndpoint}/track/get/combined/${this.id}?text=${query}`).then(res => {
+      let a = document.createElement('a')
+      a.href = res.body
+      a.target = '_blank'
       a.click()
     })
   }

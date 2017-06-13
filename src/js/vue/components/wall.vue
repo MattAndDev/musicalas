@@ -9,8 +9,9 @@
       <br>
       <span>Saves: {{saves}}/{{availableSaves}}</span>
       <br>
-      <span>{{currentTime}} / </span>
-      <span>{{totalTime}}</span>
+      <span>{{currentTime}} / </span><span>{{totalTime}}</span>
+      <input ref="posterText" type="text" name="" value="" placeholder="Text on poster">
+      <span v-on:click="getPoster">get poster</span>
     </div>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
   </div>
@@ -66,6 +67,16 @@ export default {
         Painter.saveSvg(this.time)
         this.saves = this.saves + 1
       }
+    },
+    getPoster () {
+      // if (this.saves < this.availableSaves) {
+      //   alert('Sorry more images needed')
+      //   return false
+      // }
+      // else {
+      console.log(this.$refs.posterText.value);
+        Painter.getPoster(this.$refs.posterText.value)
+      // }
     }
   }
 }
