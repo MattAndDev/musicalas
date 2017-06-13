@@ -4,7 +4,10 @@
 <template>
   <div class="configForm">
     <form v-on:submit.prevent=""  class="onSearchSubmit_form">
-      <p>Configuration: use with care</p>
+      <p>
+        Configuration: use with care<br>
+        Expected number of vertices on canvas: {{vertices}}
+      </p>
       <label for="points">Points <span>max ~ 40</span></label>
       <input v-on:keyup="onChange" ref="points" type="number" name="points" value="25">
       <label for="alanalyzedBandWidth">Bandwith to analayze (alway starting at 0) in Hz <span>max ~ 20000</span></label>
@@ -34,7 +37,8 @@ export default {
   name: 'sc-search',
   data () {
     return {
-      tracks: false
+      tracks: false,
+      vertices: 0
     }
   },
   methods: {
@@ -45,9 +49,18 @@ export default {
       else {
         Painter.config[e.target.name] = e.target.value
       }
+      this.calculateVertices()
+    },
+    calculateVertices () {
+      let points = parseInt(this.$refs.points.value)
+      let radialRepeaters = parseInt(this.$refs.radialRepeaters.value)
+      let analyzerRanges = parseInt(this.$refs.analyzerRanges.value)
+      let hasMirrors = this.$refs.hasMirrors.checked ? 2 : 1
+      this.vertices = points * radialRepeaters * analyzerRanges * hasMirrors
     }
   },
   mounted () {
+    this.calculateVertices()
   }
 }
 </script>
