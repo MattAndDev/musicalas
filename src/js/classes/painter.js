@@ -37,7 +37,7 @@ class Painter {
     paper.view.onFrame = this.render.bind(this)
     AudioParser.on('ready', () => {
       this.id = hash(
-        store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters
+        store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters + new Date().getTime()
       )
       this._registerId()
       this._drawPaths()
