@@ -23,6 +23,7 @@ class Painter {
       analyzerRanges: 6,
       radialRepeaters: 10,
       alanalyzedBandWidth: 15000,
+      hasMirrors: false,
       size: 1200 // arbtrary in px
     }
     Vue.use(VueResource)
@@ -168,7 +169,7 @@ class Painter {
           fillColor: '#333333',
           opacity: 0.5
         }
-        this.ranges[i].paths[y] = [new paper.Path(pathConfig), new paper.Path(pathConfig)]
+        this.ranges[i].paths[y] = this.config.hasMirrors ? [new paper.Path(pathConfig), new paper.Path(pathConfig)] : [new paper.Path(pathConfig)]
       }
     }
   }
