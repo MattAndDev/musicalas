@@ -189,7 +189,6 @@ export default {
         classes: `${src}/js/classes`,
         components: `${src}/js/vue/components`,
         views: `${src}/js/vue/views`,
-        settings: `${src}/js/utils/settings`,
         env: `${src}/js/env`,
         store: `${src}/js/store`
       }

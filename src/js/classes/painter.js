@@ -8,8 +8,8 @@ import Vue from 'Vue'
 import VueResource from 'vue-resource'
 import hash from 'string-hash'
 // utils
-import settings from 'settings'
 import AudioParser from 'classes/audio-parser'
+import settings from 'utils/settings'
 // env
 import env from 'env'
 // store

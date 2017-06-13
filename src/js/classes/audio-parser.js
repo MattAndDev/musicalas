@@ -8,7 +8,7 @@ import EventEmitter from 'eventemitter3'
 import Vue from 'Vue'
 import VueResource from 'vue-resource'
 // utils
-import settings from 'settings'
+import settings from 'utils/settings'
 // env
 import env from 'env'
 
