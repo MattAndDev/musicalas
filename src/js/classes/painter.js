@@ -16,8 +16,7 @@ import env from 'env'
 import store from 'store'
 
 class Painter {
-  constructor ($el) {
-
+  constructor () {
     this.config = {
       points: 25,
       analyzerRanges: 6,
@@ -28,6 +27,12 @@ class Painter {
     }
     Vue.use(VueResource)
   }
+
+  // setUp
+  // ============================================
+  // extended pape.js init set sizes
+  // bind event handlers, attaches event lsitener on Audiopareser
+  // when readyregisters track id and starts to draw
 
   setUp ($el) {
     $el.style.width = `${this.config.size}px`
@@ -58,10 +63,12 @@ class Painter {
   // ============================================
 
   saveSvg (timeStamp) {
+    // scaffold svg object
     let svg = {
       time: timeStamp,
       raw: paper.project.exportSVG({bounds: 'view', asString: true})
     }
+    // ship it
     Vue.http.post(`${env.apiEndpoint}/track/save/svg/${this.id}`, svg, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => {
@@ -91,8 +98,12 @@ class Painter {
       a.click()
     })
   }
-  // saveSvg
+
+
+  // _registerId
   // ============================================
+  // ship song hash to the backend to create a track reference
+  // passes in track data from soundcloud and this.config
 
   _registerId () {
     let data = {
@@ -101,7 +112,7 @@ class Painter {
     }
     Vue.http.post(`${env.apiEndpoint}/track/register/${this.id}`, data, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    }).then(res => {
+    }).then((res) => {
       // console.log(res)
     })
   }
@@ -122,9 +133,13 @@ class Painter {
             paper.view.center.x - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].x[0], this.ranges[rangeIndex].frequencies[index].x[1]),
             paper.view.center.y - AudioParser.getByteAverageFrequency(this.ranges[rangeIndex].frequencies[index].y[0], this.ranges[rangeIndex].frequencies[index].y[1])
           )
-          let deg = degreeIndex * (360 / this.config.radialRepeaters) + (360 / 8)
+          // interpolate degrees with degreeIndex
+          let deg = degreeIndex * (360 / this.config.radialRepeaters) + (360 / 8) // <- move on quarter
+          // rotate it
           point = point.rotate(deg, paper.view.center)
+          // add it
           path.add(point)
+          // remove tail, if any
           if (path.segments.length > this.config.points) {
             path.removeSegment(0)
           }
@@ -169,17 +184,16 @@ class Painter {
           fillColor: '#333333',
           opacity: 0.5
         }
+        // if this config mirror is falsy add one path, else add secon (mirror)
         this.ranges[i].paths[y] = this.config.hasMirrors ? [new paper.Path(pathConfig), new paper.Path(pathConfig)] : [new paper.Path(pathConfig)]
       }
     }
   }
 
 
-  onMouseMove = (e) => {
-  }
+  onMouseMove = (e) => {}
 
-  onResize = (e) => {
-  }
+  onResize = (e) => {}
 
 
 }
