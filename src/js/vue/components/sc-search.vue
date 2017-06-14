@@ -4,8 +4,8 @@
 <template>
   <div class="scSearch">
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">
-      <input ref="searchQueryField" type="text" name="" value="" placeholder="Song name, artist, something" required>
-      <input type="submit" name="" value="Search">
+      <input class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>
+      <input class="scSearch_form_btn btn" type="submit" name="" value="search">
     </form>
     <ul class="scSearch_results" v-if="tracks">
       <li v-for="track in tracks" v-on:click='onSongSelect' :id="track.id" class="scSearch_results_item">
