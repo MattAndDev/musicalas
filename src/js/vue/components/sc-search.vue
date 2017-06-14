@@ -4,7 +4,7 @@
 <template>
   <div class="scSearch">
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">
-      <input class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>
+      <input v-on:keyup="onKeyUp" class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>
       <input class="scSearch_form_btn btn" type="submit" name="" value="search">
     </form>
     <ul class="scSearch_results" v-if="tracks">
@@ -36,9 +36,26 @@ export default {
   methods: {
     // onFormSubmit
     onSearchSubmit () {
-      let query = this.$refs.searchQueryField.value
       // if no query do nothing
-      if (query.length === 0) return false
+      if (this.$refs.searchQueryField.value.length === 0) return false
+      // else search
+      this.search()
+    },
+    // onSongSelect
+    onSongSelect (e) {
+      // get id and fetch song from this.tracks
+      let id = e.target.getAttribute('id')
+      let selectedTrack = _.find(this.tracks, (o) => { return parseInt(o.id) === parseInt(id) })
+      store.setCurrentTrack(selectedTrack)
+      this.$router.push('/play')
+    },
+    onKeyUp (e) {
+      if (this.$refs.searchQueryField.value <= 3) return false
+      // else search
+      this.search()
+    },
+    search () {
+      let query = this.$refs.searchQueryField.value
       // else search via ScApi
       ScApi.search(query).then((tracks) => {
         // if no results
@@ -48,14 +65,6 @@ export default {
         // then expose tracks
         this.tracks = tracks
       })
-    },
-    // onSongSelect
-    onSongSelect (e) {
-      // get id and fetch song from this.tracks
-      let id = e.target.getAttribute('id')
-      let selectedTrack = _.find(this.tracks, (o) => { return parseInt(o.id) === parseInt(id) })
-      store.setCurrentTrack(selectedTrack)
-      this.$router.push('/play')
     }
   },
   mounted () {
