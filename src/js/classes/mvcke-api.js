@@ -43,7 +43,7 @@ class MvckeApi {
     // scaffold svg object
     let svg = {
       time: timeStamp,
-      raw: paper.project.exportSVG({bounds: 'view', asString: true})
+      raw: Painter.paper.project.exportSVG({bounds: 'view', asString: true})
     }
     // ship it
     Vue.http.post(`${env.apiEndpoint}/track/save/svag/${this.id}`, svg, {

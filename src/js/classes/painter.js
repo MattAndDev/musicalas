@@ -36,10 +36,11 @@ class Painter {
   // when ready registers track id and starts to draw
 
   setUp ($el) {
-    this.$el = $el
+    this.$el = $el // expose to mvcke-api
     $el.style.width = `${this.config.size}px`
     $el.style.height = `${this.config.size}px`
     paper.setup($el)
+    this.paper = paper // expose mvcke-api
     paper.view.onResize = this.onResize.bind(this)
     paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
