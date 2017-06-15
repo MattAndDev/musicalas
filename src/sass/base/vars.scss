@@ -6,13 +6,15 @@
 // Colors
 //============================================
 
-$primary:     #00F;
-$black:       #333333;
+$primary:     #1FE89F;
+$black:       #222222;
 $white:       #FFFFFF;
 
-$gray:        #DDD;
-$gray-light:  #F7F7F7;
-$gray-dark:   #767676;
+$gray-light-ultra:  #F7F7F7;
+$gray-light:        #CBCBCB;
+$gray:              #878787;
+$gray-dark:         #444444;
+$gray-dark-ultra:   #333333;
 
 // Pass on for semantics
 $color-text:  $black;
@@ -36,7 +38,7 @@ $space-quad:      $space * 4;
 $font:          "Titillium Web", "Helvetica Neue", Arial, sans-serif;
 $font-heading:  $font;
 $font-mono:     monospace, monospace;
-$font-size:     15px;
+$font-size:     16px;
 $line-height:   ($space / $font-size);
 
 // Headings (responsive)

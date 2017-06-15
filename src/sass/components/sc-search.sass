@@ -2,8 +2,9 @@
   +size(380px, 80px)
   +center-transform()
   top: 25%
+  background: $white
   text-align: center
-
+  z-index: 100
 
 .scSearch_title
   margin-bottom: $space-quarter
@@ -15,27 +16,34 @@
 .scSearch_form
   position: relative
   margin: 0
+  border: 1px solid $gray-light
   text-align: left
   white-space: nowrap
-  overflow: hidden
   z-index: 100
 
 input.scSearch_form_input
   display: inline-block
   width: 85%
+  border: none
+  &:focus
+    box-shadow: none
 
 .scSearch_form_btn
-  +pos(0 1px 0, top right bottom)
+  +pos(-1px, top right bottom)
   display: inline-block
-  width: 15%
+  width: 41px
+  border: 0
   border-radius: 0
+  background: $gray-light
 
 .scSearch_form_btn_icon
-  +center(20px)
+  +center(15px)
   fill: $white
 
 .scSearch_results
   max-height: 300px
+  border-bottom: 1px solid $gray-light
+  background: $white
   font-size: 14px
   line-height: 24px
   text-align: left
@@ -45,28 +53,33 @@ input.scSearch_form_input
   position: relative
   margin-top: -1px
   padding: 4px 44px 4px 4px
-  transition: transform .2s
+  transform: translate3d(0, 0, 1px)
   border: 1px solid $gray-light
   cursor: pointer
   overflow: hidden
+
+.scSearch_results_item:first-child
+  padding-top: $space-quarter
+  border-top: 0
+
+.scSearch_results_item:last-child
+  border-bottom: 0
 
 .no-touch .scSearch_results_item:hover
   .scSearch_results_item_submit
     transform: translate(0, 0)
     opacity: 1
 
-.scSearch_results_item:first-child
-  padding-top: $space-quarter
-  border-top: 0
-
-
 .scSearch_results_item_submit
   +pos(0, top right bottom)
   width: 40px
   transform: translate(40px, 0)
-  transition: transform .2s, opacity .2s
-  background: $gray
+  transition: transform .2s, opacity .2s, background-color .2s
+  background: $gray-light
   opacity: 0
+
+.no-touch .scSearch_results_item_submit:hover
+  background: $primary
 
 .scSearch_results_item_submit_icon
   +center(40px, 20px)

@@ -13,7 +13,7 @@
         </svg>
       </span>
     </form>
-    <ul class="scSearch_results" v-if="tracks">
+    <ul class="scSearch_results" v-if="tracks.length">
       <li class="scSearch_results_item"
         v-for="track in tracks"
         v-on:click='onSongSelect'

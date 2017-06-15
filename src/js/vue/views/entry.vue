@@ -2,8 +2,9 @@
   Entry view-component
  -->
 <template>
-  <div class="view view-etry">
+  <div class="view view-entry entry">
     <sc-search></sc-search>
+    <config-form></config-form>
   </div>
 </template>
 

@@ -1,11 +1,36 @@
 .configForm
-  +pos(0, bottom right)
+  +pos(100% 0 0, top right left)
   display: inline-block
   width: auto
   padding: $space
+  transition: transform .2s
+  border-top: 1px solid $gray
   font-size: 14px
-  p
-    font-weight: bold
-  label span
-    color: red
-    font-size: 11px
+
+
+.configForm.is-open
+  transform: translate(0, -100%)
+
+.configForm_form_fieldset
+  +mq($bp-sm)
+    width: 50%
+    padding: $space-quarter
+    float: left
+
+.configForm_form_label span
+  color: red
+  font-size: 11px
+
+.configForm_toggler
+  +size(30px)
+  +pos(-31px 50%, top left)
+  display: block
+  margin-left: -20px
+  border-top-left-radius: 2px
+  border-top-right-radius: 2px
+  background: $gray-dark
+  cursor: pointer
+
+.configForm_toggler_icon
+  +center(18px)
+  fill: $white
