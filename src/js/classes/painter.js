@@ -33,7 +33,7 @@ class Painter {
   // ============================================
   // extended pape.js init set sizes
   // bind event handlers, attaches event lsitener on Audiopareser
-  // when readyregisters track id and starts to draw
+  // when ready registers track id and starts to draw
 
   setUp ($el) {
     this.$el = $el
@@ -44,10 +44,6 @@ class Painter {
     paper.view.onMouseMove = this.onMouseMove.bind(this)
     paper.view.onFrame = this.render.bind(this)
     AudioParser.on('ready', () => {
-      this.id = hash(
-        store.currentTrack.title + this.config.points + this.config.alanalyzedBandWidth + this.config.analyzerRanges + this.config.radialRepeaters + new Date().getTime()
-      )
-      this._registerId()
       this._drawPaths()
     })
   }
@@ -60,83 +56,6 @@ class Painter {
       this._animatePaths(e)
     }
   }
-
-  // saveSvg
-  // ============================================
-
-  saveSvg (timeStamp) {
-    // scaffold svg object
-    let svg = {
-      time: timeStamp,
-      raw: paper.project.exportSVG({bounds: 'view', asString: true})
-    }
-    // ship it
-    Vue.http.post(`${env.apiEndpoint}/track/save/svg/${this.id}`, svg, {
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    }).then(res => {
-      // console.log(res)
-    })
-  }
-
-  savePng (timeStamp) {
-    // let url = this.$el.toDataURL('image/jpeg', 1.0)
-    // console.log(url);
-    // console.log(formdata);
-
-    this.$el.toBlob((blob) => {
-      var formdata = new FormData()
-      formdata.append('file', blob, timeStamp)
-      Vue.http.post(`${env.apiEndpoint}/track/save/png/${this.id}`, formdata, {
-        headers: { 'Content-Type': 'multipart/form-data;' }
-      }).then(res => {
-      })
-        // console.log(res)
-    })
-    // ship it
-
-  }
-
-  // getZip
-  // ============================================
-
-  getZip () {
-    Vue.http.get(`${env.apiEndpoint}/track/get/zip/${this.id}`).then(res => {
-      let a = document.createElement('a')
-      a.href = res.body
-      a.click()
-    })
-  }
-
-  // getPoster
-  // ============================================
-
-  getPoster (query) {
-    Vue.http.get(`${env.apiEndpoint}/track/get/combined/${this.id}?text=${query}`).then(res => {
-      let a = document.createElement('a')
-      a.href = res.body
-      a.target = '_blank'
-      a.click()
-    })
-  }
-
-
-  // _registerId
-  // ============================================
-  // ship song hash to the backend to create a track reference
-  // passes in track data from soundcloud and this.config
-
-  _registerId () {
-    let data = {
-      track: store.currentTrack,
-      config: this.config
-    }
-    Vue.http.post(`${env.apiEndpoint}/track/register/${this.id}`, data, {
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    }).then((res) => {
-      // console.log(res)
-    })
-  }
-
 
   // _animatePath
   // ============================================
