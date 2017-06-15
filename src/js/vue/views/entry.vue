@@ -12,6 +12,7 @@
 // core
 import Vue from 'Vue'
 // store
+import Socket from 'classes/socket'
 import store from 'store'
 // components
 import ScSearch from 'components/sc-search.vue'

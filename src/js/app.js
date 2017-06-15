@@ -8,11 +8,12 @@ let domReady = function (callback) {
 }
 
 domReady(() => {
-  Vue.config.devtools = false
   const app = new Vue({
     el: '#App',
     router,
     template: '<App/>',
     components: { App }
   })
+  Vue.config.silent = true
+  Vue.config.devtools = false
 })
