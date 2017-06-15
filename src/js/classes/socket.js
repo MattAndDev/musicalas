@@ -9,10 +9,10 @@ import env from 'env'
 
 class Socket {
   constructor () {
-    this.socket = new SocketIo(env.socketEndpoint)
-    this.socket.on('test', () => {
-      console.log('er');
-    })
+    // this.socket = new SocketIo(env.socketEndpoint)
+    // this.socket.on('svgToPng', (data) => {
+    //   console.log(data.fileName);
+    // })
   }
 
 }
