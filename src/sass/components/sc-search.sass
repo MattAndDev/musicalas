@@ -1,19 +1,69 @@
 .scSearch
-  +size(320px, 80px)
+  +size(380px, 80px)
   +center-transform()
-  top: 40%
+  top: 25%
+  text-align: center
+
+
+.scSearch_title
+  margin-bottom: $space-quarter
+  font-weight: normal
+
+.scSearch_text
+  margin-bottom: $space-half
+
 .scSearch_form
+  position: relative
   margin: 0
+  text-align: left
   white-space: nowrap
   overflow: hidden
+  z-index: 100
 
 input.scSearch_form_input
   display: inline-block
-  width: 70%
+  width: 78%
 
 .scSearch_form_btn
-  +pos(0, top right bottom)
+  +pos(0 1px 0, top right bottom)
   display: inline-block
-  width: 30%
-  border-top-left-radius: 0
-  border-bottom-left-radius: 0
+  width: 22%
+  border-radius: 0
+
+.scSearch_results
+  max-height: 300px
+  font-size: 14px
+  line-height: 24px
+  text-align: left
+  overflow: scroll
+
+.scSearch_results_item
+  position: relative
+  margin-top: -1px
+  padding: 4px 44px 4px 4px
+  transition: transform .2s
+  border: 1px solid $gray-light
+  cursor: pointer
+  overflow: hidden
+
+.no-touch .scSearch_results_item:hover
+  .scSearch_results_item_submit
+    transform: translate(0, 0)
+    opacity: 1
+
+.scSearch_results_item:first-child
+  padding-top: $space-quarter
+  border-top: 0
+
+
+.scSearch_results_item_submit
+  +pos(0, top right bottom)
+  width: 40px
+  transform: translate(40px, 0)
+  transition: transform .2s, opacity .2s
+  background: $gray
+  opacity: 0
+
+.scSearch_results_item_submit_icon
+  +center(40px, 20px)
+  fill: $white

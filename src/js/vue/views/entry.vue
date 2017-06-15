@@ -4,7 +4,6 @@
 <template>
   <div class="view view-etry">
     <sc-search></sc-search>
-    <config-form></config-form>
   </div>
 </template>
 

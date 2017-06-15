@@ -3,13 +3,23 @@
  -->
 <template>
   <div class="scSearch">
+    <h1 class="scSearch_title">m<span>v</span>cke</h1>
+    <p class="scSearch_text">music visualisation and mass customisation <br> search for a song // save svgs // create poster</p>
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">
       <input v-on:keyup="onKeyUp" class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>
       <input class="scSearch_form_btn btn" type="submit" name="" value="search">
     </form>
     <ul class="scSearch_results" v-if="tracks">
-      <li v-for="track in tracks" v-on:click='onSongSelect' :id="track.id" class="scSearch_results_item">
-        {{track.title}} - {{track.parsedDuration}}
+      <li class="scSearch_results_item"
+        v-for="track in tracks"
+        v-on:click='onSongSelect'
+        :id="track.id">
+          <span>{{track.title}} - {{track.parsedDuration}}</span>
+          <span class="scSearch_results_item_submit">
+            <svg class="scSearch_results_item_submit_icon icon">
+              <use xlink:href="images/sprite.svg#i-search-select-arrow"></use>
+            </svg>
+          </span>
       </li>
     </ul>
   </div>
@@ -44,15 +54,19 @@ export default {
     // onSongSelect
     onSongSelect (e) {
       // get id and fetch song from this.tracks
-      let id = e.target.getAttribute('id')
+      let id = e.target.closest('li').getAttribute('id')
       let selectedTrack = _.find(this.tracks, (o) => { return parseInt(o.id) === parseInt(id) })
       store.setCurrentTrack(selectedTrack)
       this.$router.push('/play')
     },
     onKeyUp (e) {
-      if (this.$refs.searchQueryField.value <= 3) return false
+      if (this.$refs.searchQueryField.value <= 4) {
+        this.tracks = []
+      }
       // else search
-      this.search()
+      else {
+        this.search()
+      }
     },
     search () {
       let query = this.$refs.searchQueryField.value
