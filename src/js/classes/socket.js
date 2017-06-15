@@ -10,6 +10,9 @@ import env from 'env'
 class Socket {
   constructor () {
     this.socket = new SocketIo(env.socketEndpoint)
+    this.socket.on('test', () => {
+      console.log('er');
+    })
   }
 
 }
