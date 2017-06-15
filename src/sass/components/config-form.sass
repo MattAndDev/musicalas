@@ -11,11 +11,19 @@
 .configForm.is-open
   transform: translate(0, -100%)
 
+.configForm_form_entry
+  margin: 0 0 $space-quarter
+
 .configForm_form_fieldset
   +mq($bp-sm)
     width: 50%
-    padding: $space-quarter
+    // padding: $space-quarter
     float: left
+    &:nth-child(even)
+      padding-right: $space-half
+    &:nth-child(odd)
+      padding-left: $space-half
+
 
 .configForm_form_label span
   color: red
