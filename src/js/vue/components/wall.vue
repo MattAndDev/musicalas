@@ -24,6 +24,7 @@ import Vue from 'Vue'
 import store from 'store'
 // utils
 import Painter from 'classes/painter'
+import MvckeApi from 'classes/mvcke-api'
 import AudioParser from 'classes/audio-parser'
 import msToS from 'utils/ms-to-s'
 
@@ -57,7 +58,7 @@ export default {
   },
   methods: {
     getZip () {
-      Painter.getZip()
+      MvckeApi.getZip()
     },
     saveSvg () {
       if (this.saves >= this.availableSaves) {
@@ -65,8 +66,8 @@ export default {
         return false
       }
       else {
-        Painter.saveSvg(this.time)
-        Painter.savePng(this.time)
+        MvckeApi.saveSvg(this.time)
+        MvckeApi.savePng(this.time)
         this.saves = this.saves + 1
       }
     },
