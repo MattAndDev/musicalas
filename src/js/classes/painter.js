@@ -36,6 +36,7 @@ class Painter {
   // when readyregisters track id and starts to draw
 
   setUp ($el) {
+    this.$el = $el
     $el.style.width = `${this.config.size}px`
     $el.style.height = `${this.config.size}px`
     paper.setup($el)
@@ -75,6 +76,24 @@ class Painter {
     }).then(res => {
       // console.log(res)
     })
+  }
+
+  savePng (timeStamp) {
+    // let url = this.$el.toDataURL('image/jpeg', 1.0)
+    // console.log(url);
+    // console.log(formdata);
+
+    this.$el.toBlob((blob) => {
+      var formdata = new FormData()
+      formdata.append('file', blob, timeStamp)
+      Vue.http.post(`${env.apiEndpoint}/track/save/png/${this.id}`, formdata, {
+        headers: { 'Content-Type': 'multipart/form-data;' }
+      }).then(res => {
+      })
+        // console.log(res)
+    })
+    // ship it
+
   }
 
   // getZip
