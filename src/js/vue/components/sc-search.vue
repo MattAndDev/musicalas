@@ -7,7 +7,11 @@
     <p class="scSearch_text">music visualisation and mass customisation <br> search for a song // save svgs // create poster</p>
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">
       <input v-on:keyup="onKeyUp" class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>
-      <input class="scSearch_form_btn btn" type="submit" name="" value="search">
+      <span class="scSearch_form_btn btn">
+        <svg class="scSearch_form_btn_icon icon">
+          <use xlink:href="images/sprite.svg#i-search-magnifier"></use>
+        </svg>
+      </span>
     </form>
     <ul class="scSearch_results" v-if="tracks">
       <li class="scSearch_results_item"
