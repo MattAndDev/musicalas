@@ -13,6 +13,32 @@
   +size(100vw, 100vh)
   +center-transform()
 
-.wall_controls
-  position: relative
+.wall_info
+  +pos(0, bottom left)
+  margin: 0
+  padding: $space-half
+  background: rgba($white, .5)
+  font-size: 12px
   z-index: 100
+
+.wall_controls
+  +pos(0, bottom right)
+  max-width: 450px
+  margin: 0
+  padding: $space-half
+  background: rgba($white, .5)
+  font-size: 12px
+  text-align: right
+  z-index: 100
+
+.wall_controls .btn
+  font-size: 12px
+
+.wall_controls_poster
+  margin-top: $space-quarter
+
+.wall_controls_poster input
+  margin-bottom: $space-quarter
+  
+.wall_controls .btn:first-child
+  margin-bottom: $space-quarter

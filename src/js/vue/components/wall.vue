@@ -3,16 +3,19 @@
  -->
 <template>
   <div class="wall">
-    <div class="wall_controls">
-      <span v-on:click="saveSvg">save svg</span>
-      <span v-on:click="getZip">get zip</span>
-      <br>
-      <span>Saves: {{saves}}/{{availableSaves}}</span>
-      <br>
-      <span>{{currentTime}} / </span><span>{{totalTime}}</span>
-      <input ref="posterText" type="text" name="" value="" placeholder="Text on poster">
-      <span v-on:click="getPoster">get poster</span>
-    </div>
+      <p class="wall_info">
+        <span>{{track.title}}</span><br>
+        <span>Time: {{currentTime}} / </span><span>{{totalTime}}</span><br>
+        <span>Saved images / required: {{saves}}/{{availableSaves}}</span>
+      </p>
+      <div class="wall_controls">
+        <span v-on:click="saveSvg" class="btn">Save this image</span><br>
+        <span v-on:click="getZip" class="btn">Get current raw data</span><br>
+        <div v-if="saves === availableSaves" class="wall_controls_poster">
+          <input ref="posterText" type="text" name="" value="" placeholder="Text on poster">
+          <span class="btn" v-on:click="getPoster">Get poster (beta)</span>
+        </div>
+      </div>
     <canvas class="wall_canvas" ref="wall" resize></canvas >
   </div>
 </template>
@@ -36,6 +39,7 @@ export default {
       totalTime: '',
       time: 0,
       availableSaves: 10,
+      track: store.currentTrack,
       saves: 0
     }
   },
@@ -77,7 +81,7 @@ export default {
         return false
       }
       else {
-        Painter.getPoster(this.$refs.posterText.value)
+        MvckeApi.getPoster(this.$refs.posterText.value)
       }
     }
   }

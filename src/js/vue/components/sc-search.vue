@@ -4,7 +4,7 @@
 <template>
   <div class="scSearch">
     <h1 class="scSearch_title">m<span>v</span>cke</h1>
-    <p class="scSearch_text">music visualisation and mass customisation <br> search for a song // save svgs // create poster</p>
+    <p class="scSearch_text">data visualisation and mass customisation <br> song => images => poster</p>
     <p class="scSearch_info">the fluidity of the application will highly depend on the specifics of your hardware</p>
     <form v-on:submit.prevent="onSearchSubmit"  class="scSearch_form">
       <input v-on:keyup="onKeyUp" class="scSearch_form_input" ref="searchQueryField" type="text" name="" value="" placeholder="search soundcloud for ..." required>

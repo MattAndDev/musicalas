@@ -46,7 +46,7 @@ class MvckeApi {
       raw: Painter.paper.project.exportSVG({bounds: 'view', asString: true})
     }
     // ship it
-    Vue.http.post(`${env.apiEndpoint}/track/save/svag/${this.id}`, svg, {
+    Vue.http.post(`${env.apiEndpoint}/track/save/svg/${this.id}`, svg, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
     }).then(res => { return true }, err => { throw err })
   }
