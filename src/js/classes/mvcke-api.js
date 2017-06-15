@@ -27,6 +27,7 @@ class MvckeApi {
   // when ready registers track id and starts to draw
 
   init ($el) {
+    this._getCookies()
     AudioParser.on('ready', () => {
       this.id = hash(
         store.currentTrack.title + Painter.config.points + Painter.config.alanalyzedBandWidth + Painter.config.analyzerRanges + Painter.config.radialRepeaters + new Date().getTime()
@@ -107,19 +108,31 @@ class MvckeApi {
       err => { throw err })
   }
 
+  // _getCookies
+  // ============================================
+
+  _getCookies () {
+    if (Cookie.get('track-ids')) {
+      let ids = JSON.parse(Cookie.get('track-ids'))
+      store.setOldIds(ids)
+    }
+  }
+
+
+  // _getCookies
+  // ============================================
   _setCookieID () {
     if (Cookie.get('track-ids')) {
       let ids = JSON.parse(Cookie.get('track-ids'))
       ids.push(this.id)
-      console.log(ids);
       JSON.stringify(ids)
       Cookie.set('track-ids', ids)
-      // do something with cookie
     }
     else {
       let ids = JSON.stringify([this.id])
       Cookie.set('track-ids', ids)
     }
+    store.setId(this.id)
     Cookie.set('current-track-id', this.id)
   }
 
