@@ -33,6 +33,7 @@ export default {
     return {
       currentTime: 0,
       totalTime: '',
+      time: 0,
       availableSaves: 10,
       saves: 0
     }
@@ -44,11 +45,11 @@ export default {
       this.totalTime = msToS(store.currentTrack.duration)
       let time = 1
       var timer = () => {
-        this.currentTime = msToS(time * 1000)
+        this.currentTime = msToS(time * 100)
         time = time + 1
         this.time = time
       }
-      var clock = setInterval(() => { timer() }, 1000)
+      var clock = setInterval(() => { timer() }, 100)
       AudioParser.on('end', () => {
         clearInterval(clock)
       })
@@ -65,6 +66,7 @@ export default {
       }
       else {
         Painter.saveSvg(this.time)
+        Painter.savePng(this.time)
         this.saves = this.saves + 1
       }
     },
