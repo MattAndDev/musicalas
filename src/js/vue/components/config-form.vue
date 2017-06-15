@@ -30,6 +30,10 @@
         <input class="configForm_form_input" v-on:keyup="onChange" ref="analyzerRanges" type="number" name="analyzerRanges" value="6">
       </fieldset>
       <fieldset class="configForm_form_fieldset">
+        <label class="configForm_form_label" for="smoothLevel">Smoothing costant<span>max ~ 0.7</span></label>
+        <input class="configForm_form_input" v-on:keyup="onChange" step="0.01" ref="smoothLevel" type="number" name="smoothLevel" value="0.5">
+      </fieldset>
+      <fieldset class="configForm_form_fieldset">
         <label class="configForm_form_label" for="hasMirrors">Mirror axis</span></label><br>
         <input class="configForm_form_input" v-on:change="onChange" ref="hasMirrors" type="checkbox" name="hasMirrors" checked="true">
       </fieldset>
@@ -62,6 +66,7 @@ export default {
         Painter.config[e.target.name] = e.target.checked
       }
       else {
+        console.log(e.target.value);
         Painter.config[e.target.name] = e.target.value
       }
       this.calculateVertices()

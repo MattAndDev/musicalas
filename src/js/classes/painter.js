@@ -18,6 +18,7 @@ import store from 'store'
 class Painter {
   constructor () {
     this.config = {
+      smoothLevel: 0.5,
       points: 25,
       analyzerRanges: 6,
       radialRepeaters: 10,
@@ -139,6 +140,7 @@ class Painter {
           point = point.rotate(deg, paper.view.center)
           // add it
           path.add(point)
+          path.smooth(this.config.smoothLevel)
           // remove tail, if any
           if (path.segments.length > this.config.points) {
             path.removeSegment(0)

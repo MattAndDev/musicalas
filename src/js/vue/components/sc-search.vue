@@ -86,6 +86,7 @@ export default {
     }
   },
   mounted () {
+    this.$refs.searchQueryField.focus()
   }
 }
 </script>
