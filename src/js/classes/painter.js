@@ -79,7 +79,7 @@ class Painter {
           point = point.rotate(deg, paper.view.center)
           // add it
           path.add(point)
-          path.smooth(this.config.smoothLevel)
+          // path.smooth(this.config.smoothLevel)
           // remove tail, if any
           if (path.segments.length > this.config.points) {
             path.removeSegment(0)
