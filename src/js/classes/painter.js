@@ -18,7 +18,7 @@ import store from 'store'
 class Painter {
   constructor () {
     this.config = {
-      smoothLevel: 0.5,
+      smoothLevel: 0.1,
       points: 25,
       analyzerRanges: 6,
       radialRepeaters: 10,

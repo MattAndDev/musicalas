@@ -31,7 +31,7 @@
       </fieldset>
       <fieldset class="configForm_form_fieldset">
         <label class="configForm_form_label" for="smoothLevel">Smoothing costant <span>max ~ 0.7</span></label>
-        <input class="configForm_form_input" v-on:keyup="onChange" step="0.01" ref="smoothLevel" type="number" name="smoothLevel" value="0.5">
+        <input class="configForm_form_input" v-on:keyup="onChange" step="0.01" ref="smoothLevel" type="number" name="smoothLevel" value="0.1">
       </fieldset>
       <fieldset class="configForm_form_fieldset">
         <label class="configForm_form_label" for="hasMirrors">Mirror axis</span></label><br>
