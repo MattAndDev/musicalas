@@ -3,6 +3,9 @@
  -->
 <template>
   <div class="scSearch">
+    <svg style="width: 80px" class="scSearch_logo icon">
+      <use xlink:href="images/sprite.svg#i-logo"></use>
+    </svg>
     <h1 class="scSearch_title">m<span>v</span>cke</h1>
     <p class="scSearch_text">data visualisation and mass customisation <br> song => images => poster</p>
     <p class="scSearch_info">the fluidity of the application will highly depend on the specifics of your hardware</p>
