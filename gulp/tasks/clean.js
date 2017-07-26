@@ -8,7 +8,7 @@ import del from 'del'
 // ============================================
 
 function clean (done) {
-  return del(config.dest, { dot: true, force: true }, done)
+  return del(config.destFolder, { dot: true, force: true }, done)
 }
 
 // Description
